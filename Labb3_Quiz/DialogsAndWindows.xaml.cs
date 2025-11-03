@@ -95,7 +95,7 @@ namespace Labb3_Quiz
 
             if (dialog.ShowDialog() == true)
             {
-                Users.Add(new User() { FirstName = dialog.FirstName, LastName = dialog.LastName});
+                Users.Add(new User() { FirstName = dialog.FirstName, LastName = dialog.LastName });
             }
 
         }

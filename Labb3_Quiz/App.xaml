@@ -4,6 +4,15 @@
              xmlns:local="clr-namespace:Labb3_Quiz"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="Aqua" />
+            <Setter Property="BorderThickness" Value="5" />
+            <Setter Property="BorderBrush" Value="LightPink" />
+        </Style>
+        <Style TargetType="ListBox" >
+            <Setter Property="BorderThickness" Value="4" />
+            <Setter Property="BorderBrush" Value="LightPink" />
+
+        </Style>
     </Application.Resources>
 </Application>

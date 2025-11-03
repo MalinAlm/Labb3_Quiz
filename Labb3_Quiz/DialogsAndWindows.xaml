@@ -8,15 +8,24 @@
         d:Height="800" d:Width="400" FontSize="24"
         Title="DialogsAndWindows" Height="450" Width="800">
     <Grid>
+        <Grid.Resources>
+            <Style TargetType="Button">
+                <Setter Property="Background" Value="LightGreen" />
+                <Setter Property="BorderThickness" Value="5" />
+                <Setter Property="BorderBrush" Value="LightCyan" />
+            </Style>
+
+        </Grid.Resources>
         <Grid.RowDefinitions>
-            <RowDefinition Height="290"/>
+            <RowDefinition Height="350"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-    <StackPanel>
+        <StackPanel>
         <Button 
             Content="ShowMessageBox"
             Margin="10 10 10 0"
             Click="Button_Click"    
+            Background="LightBlue"
             />
         <Button 
             x:Name="AddCharacterButton"
@@ -49,6 +58,16 @@
             Click="AddNewUser_Click"
             />
     </StackPanel>
-        <ListBox Grid.Row="1" Margin="10" ItemsSource="{Binding Users}" DisplayMemberPath="FirstName" />
+        <ListBox Grid.Row="1" Margin="10" ItemsSource="{Binding Users}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding FirstName}" />
+                        <TextBlock Margin=" 10 0" Text="{Binding FirstName}" />
+                        <Button Content="Edit user" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
     </Grid>
 </Window>
