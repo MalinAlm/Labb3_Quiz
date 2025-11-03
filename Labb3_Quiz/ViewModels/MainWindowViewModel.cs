@@ -1,0 +1,46 @@
+﻿using Labb3_Quiz.Models;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Labb3_Quiz;
+
+namespace Labb3_Quiz.ViewModels
+{
+    internal class MainWindowViewModel : ViewModelBase
+    {
+        public ObservableCollection<QuestionPackViewModel> Packs { get; } = new();
+
+		private QuestionPackViewModel _activePack;
+
+		public QuestionPackViewModel ActivePack
+		{
+			get => _activePack; 
+			set {
+				_activePack = value;
+				RaisePropertyChanged();
+				PlayerViewModel?.RaisePropertyChanged(nameof(PlayerViewModel.ActivePack));
+			}
+		}
+
+        public PlayerViewModel? PlayerViewModel { get; set; }
+		public ConfigurationViewModel? ConfigurationViewModel { get; }
+
+        public MainWindowViewModel()
+		{
+			
+			PlayerViewModel = new PlayerViewModel(this);
+			ConfigurationViewModel = new ConfigurationViewModel(this);
+
+            var pack = new QuestionPack("MyQuestionPack");
+            ActivePack = new QuestionPackViewModel(pack);
+			ActivePack.Questions.Add(new Question($"Vad är 1+1", "2", "3", "1", "4"));
+			ActivePack.Questions.Add(new Question($"Vad heter Sveriges huvudstad?", "Stockholm", "Oslo", "London", "Berlin"));
+
+        }
+
+
+	}
+}
