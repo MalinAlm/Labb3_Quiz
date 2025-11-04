@@ -10,10 +10,15 @@
 
  >
     <Grid>
-        <Button 
-        Content="Click here!"
-        HorizontalAlignment="Center"
-        VerticalAlignment="Center"
-        />
+        <StackPanel>
+            <ListBox>
+                
+            </ListBox>
+            <Button 
+            Content="Click here!"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            />
+        </StackPanel>
     </Grid>
 </UserControl>
