@@ -7,7 +7,7 @@
              xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
-             DataContext="{Binding ConfiguraionViewModel}"
+             DataContext="{Binding ConfigurationViewModel}"
  >
     <Grid>
         <Grid.RowDefinitions>
@@ -21,21 +21,24 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <TextBlock Text="Default Question Pack" Grid.Row="0" Grid.Column="0" Margin="20 10" />
+        <TextBlock Text="{Binding ActivePack.Name}" Grid.Row="0" Grid.Column="0" Margin="20 10" />
+        <!--<TextBlock Text="Default Question Pack" Grid.Row="0" Grid.Column="0" Margin="20 10" />-->
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="0" Grid.Column="1" Margin="10 10">
             <Button Content="{fa:Icon Sliders}" />
             <Button Content="{fa:Icon Plus}" Margin="5 0" />
             <Button Content="{fa:Icon Minus}" />
         </StackPanel>
 
-        <ListBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="20 0 10 20" >
-                <TextBlock Text="Hej"/>
-                <TextBlock Text="Hej"/>
-                <TextBlock Text="Hej"/>
-                <TextBlock Text="Hej"/>
-                <TextBlock Text="Hej"/>
-            </ListBox>
-            <!--<Button 
+        <ListBox 
+            Grid.Row="1" 
+            Grid.Column="0" 
+            Grid.ColumnSpan="2" 
+            Margin="20 0 10 20" 
+            ItemsSource="{Binding ActivePack.Questions}" 
+            DisplayMemberPath="Query" 
+            SelectedItem="{Binding ActiveQuestion}" />
+
+        <!--<Button 
             Content="Click here!"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
@@ -43,19 +46,19 @@
 
         <StackPanel Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Margin="10 -8 20 0">
             <Label Content="Question:" />
-            <TextBox Height="90" Margin="0 0 0 30"/>
+            <TextBox Height="90" Margin="0 0 0 30" Text="{Binding ActiveQuestion.Query}"/>
 
             <Label Content="Correct Answer:" />
-            <TextBox Margin="0 0 0 5"/>
+            <TextBox Margin="0 0 0 5" Text="{Binding ActiveQuestion.CorrectAnswer}"/>
 
             <Label Content="First Incorrect Answer:" />
-            <TextBox Margin="0 0 0 5"/>
+            <TextBox Margin="0 0 0 5" Text="{Binding ActiveQuestion.IncorrectAnswers[0]}"/>
 
             <Label Content="Second Incorrect Answer:" />
-            <TextBox Margin="0 0 0 5"/>
+            <TextBox Margin="0 0 0 5" Text="{Binding ActiveQuestion.IncorrectAnswers[1]}"/>
 
             <Label Content="Third Incorrect Answer:" />
-            <TextBox />
+            <TextBox Text="{Binding ActiveQuestion.IncorrectAnswers[2]}"/>
         </StackPanel>
     </Grid>
 </UserControl>

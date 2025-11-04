@@ -22,10 +22,11 @@ namespace Labb3_Quiz.ViewModels
 				_activePack = value;
 				RaisePropertyChanged();
 				PlayerViewModel?.RaisePropertyChanged(nameof(PlayerViewModel.ActivePack));
+                ConfigurationViewModel?.RaisePropertyChanged(nameof(ConfigurationViewModel.ActivePack));
 			}
 		}
 
-        public PlayerViewModel? PlayerViewModel { get; set; }
+        public PlayerViewModel? PlayerViewModel { get; }
 		public ConfigurationViewModel? ConfigurationViewModel { get; }
 
         public MainWindowViewModel()
