@@ -7,8 +7,17 @@
              xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
+             PreviewKeyDown="UserControl_PreviewKeyDown"
             
  >
+
+    <UserControl.InputBindings>
+        <KeyBinding Key="Insert" Command="{Binding AddQuestionCommand}"/>
+        <KeyBinding Key="Delete" Command="{Binding RemoveQuestionCommand}"/>
+    </UserControl.InputBindings>
+    <FocusManager.FocusedElement>
+        <UserControl />
+    </FocusManager.FocusedElement>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -34,9 +43,19 @@
             Grid.ColumnSpan="2" 
             Margin="20 0 10 20" 
             ItemsSource="{Binding ActivePack.Questions}" 
-            DisplayMemberPath="Query" 
             SelectedItem="{Binding ActiveQuestion}" 
-            />
+            >
+
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Margin="5">
+                        <TextBlock Text="Question:" FontWeight="Bold" />
+                        <TextBlock Text="{Binding Query}" TextWrapping="Wrap"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+            
+        </ListBox>
 
         <StackPanel Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Margin="10 -8 20 0">
             <Label Content="Question:" />

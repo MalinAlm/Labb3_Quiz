@@ -1,4 +1,4 @@
-﻿namespace Labb3_Quiz.DialogsFolder
+﻿namespace Labb3_Quiz.Dialogs
 {
     public class NewPack
     {

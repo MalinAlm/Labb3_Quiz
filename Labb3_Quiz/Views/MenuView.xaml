@@ -9,7 +9,11 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <Menu>
         <MenuItem Header="_File">
-            <MenuItem Header="_New Question Pack" Icon="{fa:Icon FolderPlus}"/>
+            <MenuItem 
+                Header="_New Question Pack" 
+                Icon="{fa:Icon FolderPlus}" 
+                Command="{Binding OpenCreateNewPackDialogCommand}"
+                />
             <MenuItem Header="_Select Question Pack" Icon="{fa:Icon FolderOpen}"/>
             <MenuItem Header="_Delete Question Pack" Icon="{fa:Icon FolderMinus}"/>
             <MenuItem Header="_Import Questions" Icon="{fa:Icon CloudArrowDown}" InputGestureText="Ctrl+I" />
@@ -17,8 +21,18 @@
             <MenuItem Header="E_xit" Icon="{fa:Icon DoorOpen}" InputGestureText="Alt+F4" />
         </MenuItem>
         <MenuItem Header="_Edit">
-            <MenuItem Header="Add Question" Icon="{fa:Icon Plus}" InputGestureText="Insert" />
-            <MenuItem Header="Remove Question" Icon="{fa:Icon Minus}" InputGestureText="Delete"/>
+            <MenuItem 
+                Header="Add Question" 
+                Command="{Binding ConfigurationViewModel.AddQuestionCommand}"
+                Icon="{fa:Icon Plus}"
+                InputGestureText="Insert" 
+                />
+            <MenuItem 
+                Header="Remove Question" 
+                Command="{Binding ConfigurationViewModel.RemoveQuestionCommand}"
+                Icon="{fa:Icon Minus}" 
+                InputGestureText="Delete"
+                />
             <MenuItem Header="Set PackName" Command="{Binding PlayerViewModel.SetPackNameCommand}" InputGestureText="Ctrl+O" Icon="{fa:Icon Sliders}" />
         </MenuItem>
         <MenuItem Header="_View">

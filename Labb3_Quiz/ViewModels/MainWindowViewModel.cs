@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Labb3_Quiz;
 using Labb3_Quiz.Command;
+using Labb3_Quiz.Dialogs;
 
 namespace Labb3_Quiz.ViewModels
 {
@@ -44,6 +45,8 @@ namespace Labb3_Quiz.ViewModels
 		public DelegateCommand ShowPlayerViewCommand { get; }
 		public DelegateCommand ShowConfigurationViewCommand {  get; }
 
+		public DelegateCommand OpenCreateNewPackDialogCommand { get; }
+
 		public MainWindowViewModel()
 		{
 
@@ -60,9 +63,24 @@ namespace Labb3_Quiz.ViewModels
 
 			CurrentViewModel = ConfigurationViewModel;
 
-            
+			OpenCreateNewPackDialogCommand = new DelegateCommand(_ => OpenCreateNewPackDialog());
 
         }
+
+		private void OpenCreateNewPackDialog()
+		{
+			var dialog = new Dialogs.CreateNewPackDialog();
+			dialog.DataContext = new CreateNewPackDialogViewModel();
+
+			if (dialog.ShowDialog() == true)
+			{
+				var dialogViewModel = (CreateNewPackDialogViewModel)dialog.DataContext;
+
+				var newPack = new QuestionPack(dialogViewModel.PackName, dialogViewModel.SelectedDifficulty, dialogViewModel.TimeLimit);
+				Packs.Add(new  QuestionPackViewModel(newPack));
+				ActivePack = Packs.Last();
+			}
+		}
 
 
 	}

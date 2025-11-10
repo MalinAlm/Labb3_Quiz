@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Labb3_Quiz.DialogsFolder
+namespace Labb3_Quiz.Dialogs
 {
     /// <summary>
     /// Interaction logic for PackOptionsDialog.xaml
