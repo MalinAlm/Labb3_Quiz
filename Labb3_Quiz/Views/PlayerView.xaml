@@ -8,7 +8,26 @@
              d:DesignHeight="450" d:DesignWidth="800"
              DataContext="{Binding PlayerViewModel}"
 >
-    <Grid>
+    <Grid ShowGridLines="True">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="2*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock 
+            Text="{Binding TimerText}"
+            FontSize="30"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            Margin="10"
+            Grid.Column="1"
+            />
         <StackPanel>
             <TextBox Text="{Binding DemoText, UpdateSourceTrigger=PropertyChanged}"/>
             <Button 
