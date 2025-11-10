@@ -10,13 +10,17 @@
         Title="MainWindow" Height="450" Width="800">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>  
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <views:MenuView Grid.Row="0" />
-        <views:PlayerView Grid.Row="1" />
+        <views:MenuView DataContext="{Binding}" Grid.Row="0" />
+        <!--<views:PlayerView Grid.Row="1" />-->    
         <!--<views:ConfigurationView Grid.Row="1"  />-->
+        <ContentControl 
+            Grid.Row="1" 
+            Content="{Binding CurrentViewModel}"
+            />
 
     </Grid>
 </Window>

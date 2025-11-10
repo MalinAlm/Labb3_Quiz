@@ -21,9 +21,19 @@
             <MenuItem Header="Remove Question" Icon="{fa:Icon Minus}" InputGestureText="Delete"/>
             <MenuItem Header="Set PackName" Command="{Binding PlayerViewModel.SetPackNameCommand}" InputGestureText="Ctrl+O" Icon="{fa:Icon Sliders}" />
         </MenuItem>
-        <MenuItem Header="View">
-            <MenuItem Header="_Play" InputGestureText="Ctrl+P" Icon="{fa:Icon Play}" />
-            <MenuItem Header="_Edit" InputGestureText="Ctrl+E" Icon="{fa:Icon Gear}" />
+        <MenuItem Header="_View">
+            <MenuItem 
+                Header="_Play" 
+                Command="{Binding ShowPlayerViewCommand}"
+                InputGestureText="Ctrl+P" 
+                Icon="{fa:Icon Play}" 
+                />
+            <MenuItem 
+                Header="_Edit" 
+                Command="{Binding ShowConfigurationViewCommand}"
+                InputGestureText="Ctrl+E" 
+                Icon="{fa:Icon Gear}" 
+                />
             <MenuItem Header="_Fullscreen" InputGestureText="Alt+Enter" Icon="{fa:Icon Expand}" />
         </MenuItem>
         
