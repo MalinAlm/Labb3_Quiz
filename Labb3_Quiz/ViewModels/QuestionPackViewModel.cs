@@ -33,6 +33,7 @@ namespace Labb3_Quiz.ViewModels
                 _model.Questions.Clear();
         }
 
+        public QuestionPack Model => _model;
 
         public string Name
         {

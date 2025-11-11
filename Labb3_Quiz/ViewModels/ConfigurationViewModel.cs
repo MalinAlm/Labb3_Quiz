@@ -29,13 +29,15 @@ namespace Labb3_Quiz.ViewModels
 
         public ICommand AddQuestionCommand { get; }
         public DelegateCommand RemoveQuestionCommand { get; }
+        public DelegateCommand OpenPackOptionsDialogCommand { get; }
 
-        public ConfigurationViewModel(MainWindowViewModel? mainWindowViewModel) 
+        public ConfigurationViewModel(MainWindowViewModel mainWindowViewModel) 
         {
             this._mainWindowViewModel = mainWindowViewModel;
 
             AddQuestionCommand = new DelegateCommand(_ => AddQuestion());
             RemoveQuestionCommand = new DelegateCommand(_ => RemoveQuestion(), _ => CanRemoveQuestion());
+            OpenPackOptionsDialogCommand = new DelegateCommand(_ => OpenPackoptionsDialog());
 
         }
         private void AddQuestion()
@@ -62,6 +64,21 @@ namespace Labb3_Quiz.ViewModels
         private bool CanRemoveQuestion()
         {
             return ActiveQuestion != null;
+        }
+
+        private void OpenPackoptionsDialog()
+        {
+
+            if (ActivePack == null) return;
+
+            var dialog = new Dialogs.PackOptionsDialog();
+            var viewModel = new PackOptionsDialogViewModel(ActivePack.Model);
+            dialog.DataContext = viewModel;
+
+            dialog.ShowDialog();
+
+            viewModel.ApplyChanges(ActivePack.Model);
+            RaisePropertyChanged(nameof(ActivePack));
         }
     }
 }
