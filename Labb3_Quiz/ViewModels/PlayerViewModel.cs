@@ -23,6 +23,17 @@ namespace Labb3_Quiz.ViewModels
             }
         }
 
+        private List<string> _answerOptions;
+        public List<string> AnswerOptions
+        {
+            get => _answerOptions;
+            set
+            {
+                _answerOptions = value;
+                RaisePropertyChanged(); 
+            }
+        }
+
         private string _timerText;
         public string TimerText
         {
@@ -30,6 +41,17 @@ namespace Labb3_Quiz.ViewModels
             set
             {
                 _timerText = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        private string _questionProgressText;
+        public string QuestionProgressText
+        {
+            get => _questionProgressText;
+            set
+            {
+                _questionProgressText = value;
                 RaisePropertyChanged();
             }
         }
@@ -77,9 +99,19 @@ namespace Labb3_Quiz.ViewModels
             ActiveQuestion = ActivePack.Questions[_currentQuestionIndex];
             _currentQuestionIndex++;
 
+            var allAnswers = new List<string>(ActiveQuestion.IncorrectAnswers)
+            {
+                ActiveQuestion.CorrectAnswer
+            };
+
+            var Random = new Random();
+            AnswerOptions = allAnswers.OrderBy(_ => Random.Next()).ToList();
+
             _remainingSeconds = ActivePack.TimeLimitInSeconds > 0 ? ActivePack.TimeLimitInSeconds : 30;
             TimerText = _remainingSeconds.ToString();
             _timer.Start();
+
+            QuestionProgressText = $"Question {_currentQuestionIndex} of {ActivePack.Questions.Count}";
 
         }
         public void StartQuiz()
