@@ -43,8 +43,9 @@
             Maximum="120"
             Value="{Binding TimeLimit, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             TickFrequency="5"
+                TickPlacement="BottomRight"
             IsSnapToTickEnabled="True"
-            Margin="0 5 0 0"
+            Margin="0 5 0 5"
             />
         </StackPanel>
 

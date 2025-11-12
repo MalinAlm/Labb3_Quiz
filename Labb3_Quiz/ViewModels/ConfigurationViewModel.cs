@@ -44,7 +44,7 @@ namespace Labb3_Quiz.ViewModels
         {
             if (ActivePack == null) return;
 
-            var newQuestion = new Question("New Question", "", "", "", "");
+            var newQuestion = new Question("New Question", string.Empty, string.Empty, string.Empty, string.Empty);
                 
             ActivePack.Questions.Add(newQuestion);
             ActiveQuestion = newQuestion;
@@ -56,7 +56,7 @@ namespace Labb3_Quiz.ViewModels
             if (ActivePack == null && ActiveQuestion == null) return;
 
             //var index = ActivePack.Questions.IndexOf(ActiveQuestion);
-            ActivePack.Questions.Remove(ActiveQuestion);
+            ActivePack?.Questions.Remove(ActiveQuestion);
 
             ActiveQuestion = null;
         }

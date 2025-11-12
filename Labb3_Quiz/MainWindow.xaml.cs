@@ -1,15 +1,6 @@
-﻿using Labb3_Quiz.Models;
-using Labb3_Quiz.ViewModels;
-using System.Text;
+﻿using Labb3_Quiz.ViewModels;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+
 
 namespace Labb3_Quiz
 {
@@ -18,12 +9,36 @@ namespace Labb3_Quiz
     /// </summary>
     public partial class MainWindow : Window
     {
+        private readonly MainWindowViewModel? mainWindowViewModel;
         public MainWindow()
         {
            
             InitializeComponent();
 
-            DataContext = new MainWindowViewModel();
+            mainWindowViewModel = new MainWindowViewModel();
+            DataContext = mainWindowViewModel;
+
+            mainWindowViewModel.PropertyChanged += (sender, args) =>
+            {
+                if (args.PropertyName == nameof(mainWindowViewModel.IsFullScreen))
+                {
+                    ToggleFullScreen(mainWindowViewModel.IsFullScreen);
+                }
+            };
+        }
+
+        private void ToggleFullScreen(bool isFullscreen)
+        {
+            if (isFullscreen)
+            {
+                WindowStyle = WindowStyle.None;
+                WindowState = WindowState.Normal;
+            }
+            else
+            {
+                WindowStyle = WindowStyle.SingleBorderWindow;
+                WindowState = WindowState.Normal;
+            }
         }
 
     }

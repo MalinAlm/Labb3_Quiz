@@ -1,4 +1,4 @@
-﻿using Labb3_Quiz.Models;
+﻿using Labb3_Quiz.Models;    
 using System.Collections.ObjectModel;
 using Labb3_Quiz.Command;
 
@@ -7,13 +7,8 @@ namespace Labb3_Quiz.ViewModels
     internal class MainWindowViewModel : ViewModelBase
     {
         public ObservableCollection<QuestionPackViewModel> Packs { get; } = new();
-		private QuestionPackViewModel _activePack;
-
         public PlayerViewModel PlayerViewModel { get; }
         public ConfigurationViewModel ConfigurationViewModel { get; }
-        public DelegateCommand OpenCreateNewPackDialogCommand { get; }
-        public DelegateCommand ShowPlayerViewCommand { get; }
-        public DelegateCommand ShowConfigurationViewCommand { get; }
 
         public bool IsConfigurationViewVisible => IsEditMode;
         public bool IsPlayerViewVisible => IsPlayMode;
@@ -37,6 +32,7 @@ namespace Labb3_Quiz.ViewModels
 
         public object? CurrentView => IsPlayMode ? PlayerViewModel : ConfigurationViewModel;
 
+        private QuestionPackViewModel _activePack;
         public QuestionPackViewModel ActivePack
 		{
 			get => _activePack; 
@@ -48,7 +44,23 @@ namespace Labb3_Quiz.ViewModels
 			}
 		}
 
-		public MainWindowViewModel()
+        private bool _isFullScreen;
+        public bool IsFullScreen
+        {
+            get => _isFullScreen;
+            set
+            {
+                _isFullScreen = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        public DelegateCommand OpenCreateNewPackDialogCommand { get; }
+        public DelegateCommand ShowPlayerViewCommand { get; }
+        public DelegateCommand ShowConfigurationViewCommand { get; }
+        public DelegateCommand ToggleFullScreenCommand {  get; }
+
+        public MainWindowViewModel()
 		{
 
             var pack = new QuestionPack("MyQuestionPack");
@@ -59,18 +71,10 @@ namespace Labb3_Quiz.ViewModels
             PlayerViewModel = new PlayerViewModel(this);
 			ConfigurationViewModel = new ConfigurationViewModel(this);
            
-            ShowConfigurationViewCommand = new DelegateCommand(parameter =>
-            {
-                IsPlayMode = false;
-            });
-
-            ShowPlayerViewCommand = new DelegateCommand(parameter =>
-            {
-                IsPlayMode = true;
-            });
-
+            ShowConfigurationViewCommand = new DelegateCommand(_ => IsPlayMode = false);
+            ShowPlayerViewCommand = new DelegateCommand(_ => IsPlayMode = true, _=> ActivePack != null && ActivePack.Questions.Count > 0);
 			OpenCreateNewPackDialogCommand = new DelegateCommand(_ => OpenCreateNewPackDialog());
-
+            ToggleFullScreenCommand = new DelegateCommand(_=> IsFullScreen = !IsFullScreen);
            
         }
 
