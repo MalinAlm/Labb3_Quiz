@@ -4,6 +4,16 @@ namespace Labb3_Quiz.Models
 {
     public class Question
     {
+        public string Query { get; set; }
+        public string CorrectAnswer { get; set; }
+        public string[] IncorrectAnswers { get; set; }
+
+        public Question()
+        {
+            Query = string.Empty;
+            CorrectAnswer = string.Empty;
+            IncorrectAnswers = Array.Empty<string>();
+        }
         public Question(string query, string correctAnswer,
             string incorrectAnswer1, string incorrectAnswer2, string incorrectAnswer3)
         {
@@ -12,12 +22,7 @@ namespace Labb3_Quiz.Models
             IncorrectAnswers = [incorrectAnswer1, incorrectAnswer2, incorrectAnswer3];
         }
 
-        public string Query { get; set; }
-
-        public string CorrectAnswer { get; set; }
-
-        public string[] IncorrectAnswers { get; set; }
-
+       
     }
 
 }

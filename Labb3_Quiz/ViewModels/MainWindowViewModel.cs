@@ -2,11 +2,14 @@
 using System.Collections.ObjectModel;
 using Labb3_Quiz.Command;
 using System.Windows;
+using Labb3_Quiz.Services;
+using System.Threading.Tasks;
 
 namespace Labb3_Quiz.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase
     {
+        private readonly DataService _dataService;
         public ObservableCollection<QuestionPackViewModel> Packs { get; } = new();
         public PlayerViewModel PlayerViewModel { get; }
         public ConfigurationViewModel ConfigurationViewModel { get; }
@@ -61,14 +64,14 @@ namespace Labb3_Quiz.ViewModels
         public DelegateCommand ShowConfigurationViewCommand { get; }
         public DelegateCommand ToggleFullScreenCommand {  get; }
         public DelegateCommand ExitProgramCommand { get; }
+        public DelegateCommand SelectPackCommand { get; }
 
         public MainWindowViewModel()
 		{
 
-            var pack = new QuestionPack("MyQuestionPack");
-            ActivePack = new QuestionPackViewModel(pack);
-            ActivePack.Questions.Add(new Question($"Vad är 1+1", "2", "3", "1", "4"));
-            ActivePack.Questions.Add(new Question($"Vad heter Sveriges huvudstad?", "Stockholm", "Oslo", "London", "Berlin"));
+            _dataService = new DataService();
+
+            _ = LoadPacksAsync();
 
             PlayerViewModel = new PlayerViewModel(this);
 			ConfigurationViewModel = new ConfigurationViewModel(this);
@@ -85,12 +88,20 @@ namespace Labb3_Quiz.ViewModels
                 PlayerViewModel.StartQuiz();
             }, _ => ActivePack != null && ActivePack.Questions.Count > 0 );
 
+            SelectPackCommand = new DelegateCommand(selectedPack => 
+            { 
+                if (selectedPack is QuestionPackViewModel pack)
+                {
+                    ActivePack = pack;
+                }
+            });
+
 			OpenCreateNewPackDialogCommand = new DelegateCommand(_ => OpenCreateNewPackDialog());
             ToggleFullScreenCommand = new DelegateCommand(_ => IsFullScreen = !IsFullScreen);
             ExitProgramCommand = new DelegateCommand(_ => Application.Current.Shutdown());
         }
 
-        private void OpenCreateNewPackDialog()
+        private async Task OpenCreateNewPackDialog()
 		{
 			var dialog = new Dialogs.CreateNewPackDialog();
 			dialog.DataContext = new CreateNewPackDialogViewModel();
@@ -100,12 +111,42 @@ namespace Labb3_Quiz.ViewModels
 				var dialogViewModel = (CreateNewPackDialogViewModel)dialog.DataContext;
 
 				var newPack = new QuestionPack(dialogViewModel.PackName, dialogViewModel.SelectedDifficulty, dialogViewModel.TimeLimit);
-				Packs.Add(new  QuestionPackViewModel(newPack));
+				Packs.Add(new QuestionPackViewModel(newPack));
 				ActivePack = Packs.Last();
 
+                ActivePack.SyncToModel();
+                await _dataService.SaveOrUpdatePacksAsync(ActivePack.Model);
             }
 		}
 
+        private async Task LoadPacksAsync()
+        {
+            var packs = await _dataService.LoadPacksAsync();
+
+            if (packs.Any())
+            {
+                foreach (var pack in packs)
+                {
+                    Packs.Add(new QuestionPackViewModel(pack));
+                }
+
+                ActivePack = Packs.First();
+            }
+            else
+            {
+                var newPack = new QuestionPack("Default Pack");
+                Packs.Add(new QuestionPackViewModel(newPack));
+                ActivePack = Packs.First();
+            }
+        }
+
+        public async Task SaveActivePackAsync()
+        {
+
+            if (ActivePack != null) return;
+            ActivePack?.SyncToModel();
+            await _dataService.SaveOrUpdatePacksAsync(ActivePack.Model);
+        }
 
 	}
 }

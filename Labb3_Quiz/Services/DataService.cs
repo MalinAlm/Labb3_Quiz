@@ -56,12 +56,26 @@ namespace Labb3_Quiz.Services
             }
         }
 
-        public async Task SavePacksAsync(IEnumerable<QuestionPack> packs)
+        public async Task SaveOrUpdatePacksAsync(QuestionPack pack)
         {
             try
             {
-                var options = new JsonSerializerOptions { WriteIndented = true };
+                var packs = await LoadPacksAsync();
 
+                var existing = packs.FirstOrDefault(p => p.Name == pack.Name);
+
+                if (existing != null)
+                {
+                    existing.Difficulty = pack.Difficulty;
+                    existing.Name = pack.Name;
+                    existing.Questions = pack.Questions;
+                }
+                else
+                {
+                    packs.Add(pack);
+                }
+
+                var options = new JsonSerializerOptions { WriteIndented = true };
                 using FileStream stream = File.Create(_filePath);
                 await JsonSerializer.SerializeAsync(stream, packs, options);
             }
@@ -71,30 +85,27 @@ namespace Labb3_Quiz.Services
             }
         }
 
-        public async Task AddOrUpdatePackAsync(QuestionPack newPack)
-        {
-            var packs = await LoadPacksAsync();
-            var existing = packs.FirstOrDefault(p => p.Name == newPack.Name);
-            if (existing != null)
-            {
-                packs.Remove(existing);
-            }
-
-            packs.Add(newPack);
-            await SavePacksAsync(packs);
-        }
-
         public async Task DeletePackAsync(string packName)
         {
-            var packs = await LoadPacksAsync();
-            var toRemove = packs.FirstOrDefault(p => p.Name == packName);
-
-            if (toRemove != null)
+            try
             {
-                packs.Remove(toRemove);
-                await SavePacksAsync(packs);
-            }
+                var packs = await LoadPacksAsync();
 
+                var toRemove = packs.FirstOrDefault(p => p.Name == packName);
+
+                if (toRemove != null)
+                {
+                    packs.Remove(toRemove);
+
+                    var options = new JsonSerializerOptions { WriteIndented = true };
+                    using FileStream stream = File.Create(_filePath);
+                    await JsonSerializer.SerializeAsync(stream, packs, options);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error deleting pack: {ex.Message}");
+            }
         }
     }
 }

@@ -15,7 +15,7 @@ namespace Labb3_Quiz.ViewModels
         private int _currentQuestionIndex;
 
         private Question? _activeQuestion;
-        public Question ActiveQuestion
+        public Question? ActiveQuestion
         {
             get => _activeQuestion;
             set

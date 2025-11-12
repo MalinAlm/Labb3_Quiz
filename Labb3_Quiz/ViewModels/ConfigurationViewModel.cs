@@ -1,5 +1,6 @@
 ﻿using Labb3_Quiz.Command;
 using Labb3_Quiz.Models;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace Labb3_Quiz.ViewModels
@@ -8,10 +9,10 @@ namespace Labb3_Quiz.ViewModels
     {
 
         private readonly MainWindowViewModel? _mainWindowViewModel;
-        private Question _activeQuestion;
+        private Question? _activeQuestion;
 
         public QuestionPackViewModel? ActivePack { get => _mainWindowViewModel?.ActivePack; }
-        public Question ActiveQuestion
+        public Question? ActiveQuestion
         {
             get => _activeQuestion;
             set
@@ -35,7 +36,7 @@ namespace Labb3_Quiz.ViewModels
             OpenPackOptionsDialogCommand = new DelegateCommand(_ => OpenPackoptionsDialog());
 
         }
-        private void AddQuestion()
+        private async Task AddQuestion()
         {
             if (ActivePack == null) return;
 
@@ -44,16 +45,20 @@ namespace Labb3_Quiz.ViewModels
             ActivePack.Questions.Add(newQuestion);
             ActiveQuestion = newQuestion;
 
+            ActivePack.SyncToModel();
+            await _mainWindowViewModel.SaveActivePackAsync();
         }
-
-        private void RemoveQuestion()
+        
+        private async void RemoveQuestion()
         {
             if (ActivePack == null || ActiveQuestion == null) return;
 
             //var index = ActivePack.Questions.IndexOf(ActiveQuestion);
-            ActivePack?.Questions.Remove(ActiveQuestion);
-
+            ActivePack.Questions.Remove(ActiveQuestion);
             ActiveQuestion = null;
+
+            ActivePack.SyncToModel();
+            await _mainWindowViewModel.SaveActivePackAsync();
         }
 
         private bool CanRemoveQuestion()
