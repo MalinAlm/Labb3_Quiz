@@ -9,6 +9,10 @@
         d:Height="800" d:Width="400"
         Title="MainWindow" Height="450" Width="800">
     
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="VisibilityConverter"/>
+    </Window.Resources>
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>  
@@ -16,11 +20,16 @@
         </Grid.RowDefinitions>
 
         <views:MenuView DataContext="{Binding}" Grid.Row="0" />
-        <!--<views:PlayerView Grid.Row="1" />-->    
-        <!--<views:ConfigurationView Grid.Row="1"  />-->
-        <ContentControl 
+
+        <views:ConfigurationView 
             Grid.Row="1" 
-            Content="{Binding CurrentViewModel}"
+            DataContext="{Binding ConfigurationViewModel}"
+            Visibility="{Binding DataContext.IsConfigurationViewVisible,RelativeSource={RelativeSource AncestorType=Window} ,Converter={StaticResource VisibilityConverter}}"
+            />
+        <views:PlayerView 
+            Grid.Row="1" 
+            DataContext="{Binding PlayerViewModel}"
+            Visibility="{Binding DataContext.IsPlayerViewVisible, RelativeSource={RelativeSource AncestorType=Window},Converter={StaticResource VisibilityConverter}}"
             />
 
     </Grid>

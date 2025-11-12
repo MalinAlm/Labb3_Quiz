@@ -1,23 +1,43 @@
 ﻿using Labb3_Quiz.Models;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Labb3_Quiz;
 using Labb3_Quiz.Command;
-using Labb3_Quiz.Dialogs;
 
 namespace Labb3_Quiz.ViewModels
 {
     internal class MainWindowViewModel : ViewModelBase
     {
         public ObservableCollection<QuestionPackViewModel> Packs { get; } = new();
-
 		private QuestionPackViewModel _activePack;
 
-		public QuestionPackViewModel ActivePack
+        public PlayerViewModel PlayerViewModel { get; }
+        public ConfigurationViewModel ConfigurationViewModel { get; }
+        public DelegateCommand OpenCreateNewPackDialogCommand { get; }
+        public DelegateCommand ShowPlayerViewCommand { get; }
+        public DelegateCommand ShowConfigurationViewCommand { get; }
+
+        public bool IsConfigurationViewVisible => IsEditMode;
+        public bool IsPlayerViewVisible => IsPlayMode;
+
+
+        private bool _isPlayMode;
+        public bool IsPlayMode
+        {
+            get => _isPlayMode;
+            set
+            {
+                _isPlayMode = value;
+                RaisePropertyChanged();
+                RaisePropertyChanged(nameof(IsEditMode));
+                RaisePropertyChanged(nameof(IsConfigurationViewVisible));
+                RaisePropertyChanged(nameof(IsPlayerViewVisible));
+            }
+        }
+
+        public bool IsEditMode => !_isPlayMode;
+
+        public object? CurrentView => IsPlayMode ? PlayerViewModel : ConfigurationViewModel;
+
+        public QuestionPackViewModel ActivePack
 		{
 			get => _activePack; 
 			set {
@@ -28,25 +48,6 @@ namespace Labb3_Quiz.ViewModels
 			}
 		}
 
-        public PlayerViewModel? PlayerViewModel { get; }
-		public ConfigurationViewModel? ConfigurationViewModel { get; }
-
-		private ViewModelBase _currentViewModel;
-		public ViewModelBase CurrentViewModel
-		{
-			get => _currentViewModel;
-			set
-			{
-				_currentViewModel = value;
-				RaisePropertyChanged();	
-			}
-		}
-
-		public DelegateCommand ShowPlayerViewCommand { get; }
-		public DelegateCommand ShowConfigurationViewCommand {  get; }
-
-		public DelegateCommand OpenCreateNewPackDialogCommand { get; }
-
 		public MainWindowViewModel()
 		{
 
@@ -55,19 +56,25 @@ namespace Labb3_Quiz.ViewModels
             ActivePack.Questions.Add(new Question($"Vad är 1+1", "2", "3", "1", "4"));
             ActivePack.Questions.Add(new Question($"Vad heter Sveriges huvudstad?", "Stockholm", "Oslo", "London", "Berlin"));
 
-            ShowPlayerViewCommand = new DelegateCommand(_ => CurrentViewModel = PlayerViewModel);
-            ShowConfigurationViewCommand = new DelegateCommand(_ => CurrentViewModel = ConfigurationViewModel);
-
             PlayerViewModel = new PlayerViewModel(this);
 			ConfigurationViewModel = new ConfigurationViewModel(this);
+           
+            ShowConfigurationViewCommand = new DelegateCommand(parameter =>
+            {
+                IsPlayMode = false;
+            });
 
-			CurrentViewModel = ConfigurationViewModel;
+            ShowPlayerViewCommand = new DelegateCommand(parameter =>
+            {
+                IsPlayMode = true;
+            });
 
 			OpenCreateNewPackDialogCommand = new DelegateCommand(_ => OpenCreateNewPackDialog());
 
+           
         }
 
-		private void OpenCreateNewPackDialog()
+        private void OpenCreateNewPackDialog()
 		{
 			var dialog = new Dialogs.CreateNewPackDialog();
 			dialog.DataContext = new CreateNewPackDialogViewModel();
@@ -79,7 +86,8 @@ namespace Labb3_Quiz.ViewModels
 				var newPack = new QuestionPack(dialogViewModel.PackName, dialogViewModel.SelectedDifficulty, dialogViewModel.TimeLimit);
 				Packs.Add(new  QuestionPackViewModel(newPack));
 				ActivePack = Packs.Last();
-			}
+
+            }
 		}
 
 
