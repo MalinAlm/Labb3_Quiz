@@ -23,6 +23,18 @@ namespace Labb3_Quiz.ViewModels
             }
         }
 
+        private bool _canAnswer = true;
+        public bool CanAnswer
+        {
+            get => _canAnswer;
+            set
+            {
+                _canAnswer = value;
+                RaisePropertyChanged();
+                AnswerCommand.RaiseCanExecuteChanged();
+            }
+        }
+
         private List<string> _answerOptions;
         public List<string> AnswerOptions
         {
@@ -93,7 +105,7 @@ namespace Labb3_Quiz.ViewModels
            
             _timer.Tick += Timer_Tick;
 
-            AnswerCommand = new DelegateCommand(SelectAnswer);
+            AnswerCommand = new DelegateCommand(SelectAnswer, _=> CanAnswer);
         }
 
         private void Timer_Tick(object? sender, EventArgs e)
@@ -114,6 +126,8 @@ namespace Labb3_Quiz.ViewModels
         {
             if (ActiveQuestion == null || selected is not string answerText) return;
 
+            CanAnswer = false;
+
             _timer.Stop();
 
             bool isCorrect = answerText == ActiveQuestion.CorrectAnswer;
@@ -125,6 +139,7 @@ namespace Labb3_Quiz.ViewModels
 
             FeedbackText = string.Empty;
             LoadNextQuestion();
+            CanAnswer = true;
         }
 
         public void LoadNextQuestion()
