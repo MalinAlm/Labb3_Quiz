@@ -1,6 +1,8 @@
 ﻿using Labb3_Quiz.Command;
 using System.Windows.Threading;
 using Labb3_Quiz.Models;
+using System.Windows.Media;
+
 
 
 namespace Labb3_Quiz.ViewModels
@@ -46,6 +48,39 @@ namespace Labb3_Quiz.ViewModels
             }
         }
 
+        private string _selectedAnswer;
+        public string SelectedAnswer
+        {
+            get => _selectedAnswer;
+            set
+            {
+                _selectedAnswer = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        private bool _quizFinished;
+        public bool QuizFinished
+        {
+            get => _quizFinished;
+            set
+            {
+                _quizFinished = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        private int _score;
+        public int Score
+        {
+            get => _score;
+            set
+            {
+                _score = value;
+                RaisePropertyChanged(); 
+            }
+        }
+
         private string _timerText;
         public string TimerText
         {
@@ -79,8 +114,8 @@ namespace Labb3_Quiz.ViewModels
             }
         }
 
-        private string _feedbackColor = "Black";
-        public string FeedbackColor
+        private Brush _feedbackColor = Brushes.Black;
+        public Brush FeedbackColor
         {
             get => _feedbackColor;
             set
@@ -90,8 +125,10 @@ namespace Labb3_Quiz.ViewModels
             }
         }
 
+        public string ResultText => $"You got {Score} out of {ActivePack?.Questions.Count ?? 0} Correct!";
 
         public DelegateCommand AnswerCommand { get; }
+        public DelegateCommand RestartCommand { get; }
         public QuestionPackViewModel? ActivePack { get => _mainWindowViewModel?.ActivePack; }
         public PlayerViewModel(MainWindowViewModel? mainWindowViewModel) 
         {
@@ -106,6 +143,7 @@ namespace Labb3_Quiz.ViewModels
             _timer.Tick += Timer_Tick;
 
             AnswerCommand = new DelegateCommand(SelectAnswer, _=> CanAnswer);
+            RestartCommand = new DelegateCommand(_ => RestartQuiz());
         }
 
         private void Timer_Tick(object? sender, EventArgs e)
@@ -127,16 +165,19 @@ namespace Labb3_Quiz.ViewModels
             if (ActiveQuestion == null || selected is not string answerText) return;
 
             CanAnswer = false;
-
+            SelectedAnswer = answerText;
             _timer.Stop();
 
             bool isCorrect = answerText == ActiveQuestion.CorrectAnswer;
+            if (isCorrect) Score++;
 
             FeedbackText = isCorrect ? "Correct answer!" : "Incorrect Answer!";
-            FeedbackColor = isCorrect ? "Green" : "Red";
+            FeedbackColor = isCorrect ? Brushes.Green : Brushes.Red;
+
 
             await Task.Delay(2000);
 
+            SelectedAnswer = null;
             FeedbackText = string.Empty;
             LoadNextQuestion();
             CanAnswer = true;
@@ -151,6 +192,8 @@ namespace Labb3_Quiz.ViewModels
                 _timer.Stop();
                 TimerText = "Quiz Complete!";
                 ActiveQuestion = null;
+                QuizFinished = true;
+                RaisePropertyChanged(nameof(ResultText));
                 return;
             }
 
@@ -185,6 +228,14 @@ namespace Labb3_Quiz.ViewModels
             _remainingSeconds = 0;
             TimerText = string.Empty;
             ActiveQuestion = null;
+        }
+
+        public void RestartQuiz()
+        {
+            QuizFinished = false;
+            Score = 0;
+            _currentQuestionIndex = 0;
+            StartQuiz();
         }
     }
 }

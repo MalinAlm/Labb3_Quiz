@@ -4,108 +4,138 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Labb3_Quiz.Views"
+             xmlns:conv="clr-namespace:Labb3_Quiz.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              DataContext="{Binding PlayerViewModel}">
 
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="VisibilityConverter"/>
+        <conv:AnswerToColorsConverter x:Key="AnswerToColorsConverter"/>
+        <conv:InverseBoolToVisibilityConverter x:Key="InverseBoolToVisibilityConverter"/>
     </UserControl.Resources>
-    
+
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="2*"/>
-            <RowDefinition Height="2*"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        
-        <TextBlock 
-            Text="{Binding TimerText}"
-            FontSize="30"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Top"
-            Margin="10"
-            Grid.Column="1"
-            />
-        <TextBlock 
-            Text="{Binding ActiveQuestion.Query}"
-            FontSize="30"
-            Grid.Row="1"
-            Grid.ColumnSpan="2"
-            HorizontalAlignment="Center"
-            />
+        <!--QUIZ RESULT VIEW-->
+        <Grid Visibility="{Binding QuizFinished, Converter={StaticResource VisibilityConverter}}">
+            <StackPanel>
 
-        <TextBlock 
-            Text="{Binding FeedbackText}"
-            Foreground="{Binding FeedbackColor}"
+                <TextBlock 
+            Text="Complete!"
+            FontSize="34"
             FontWeight="Bold"
-            FontSize="20"
             HorizontalAlignment="Center"
-            Grid.Row="2"
-            Grid.ColumnSpan="2"
-            Margin="0 5 0 5"
+            Margin="0 0 0 20"
             />
 
-        <TextBlock 
-            Text="{Binding QuestionProgressText}"
-            Grid.Row="3"
-            Grid.ColumnSpan="2"
+                <TextBlock 
+            Text="{Binding ResultText}"
+            FontSize="22"
             HorizontalAlignment="Center"
-            FontSize="18"
+            Margin="0 0 0 30"
             />
 
-        <Button 
-            Content="{Binding AnswerOptions[0]}"
-            Command="{Binding AnswerCommand}"
-            CommandParameter="{Binding AnswerOptions[0]}"
-            IsEnabled="{Binding CanAnswer}"
-            Grid.Row="4"
-            Width="250"
-            Height="70"
-            HorizontalAlignment="Right"
-            Margin="20"
+                <Button 
+            Content="Restart Quiz"
+            Command="{Binding RestartCommand}"
+            Width="150"
+            Height="40"
+            HorizontalAlignment="Center"
             />
-        <Button 
-            Content="{Binding AnswerOptions[1]}"
-            Command="{Binding AnswerCommand}"
-            CommandParameter="{Binding AnswerOptions[1]}"
-            IsEnabled="{Binding CanAnswer}"
-            Grid.Row="5"
-            Width="250"
-            Height="70"
-            HorizontalAlignment="Right"
-            Margin="20"
-            />
-        <Button 
-            Content="{Binding AnswerOptions[2]}"
-            Command="{Binding AnswerCommand}"
-            CommandParameter="{Binding AnswerOptions[2]}"
-            IsEnabled="{Binding CanAnswer}"
-            Grid.Row="4"
-            Grid.Column="1"
-            Width="250"
-            Height="70"
-            HorizontalAlignment="Left"
-            Margin="20"
-            />
-        <Button 
-            Content="{Binding AnswerOptions[3]}"
-            Command="{Binding AnswerCommand}"
-            CommandParameter="{Binding AnswerOptions[3]}"
-            IsEnabled="{Binding CanAnswer}"
-            Grid.Row="5"
-            Grid.Column="1"
-            Width="250"
-            Height="70"
-            HorizontalAlignment="Left"
-            Margin="20"
-            />
+            </StackPanel>
+        </Grid>
+
+        <!--QUIZ PLAY VIEW LAYOUT-->
+        <Grid Visibility="{Binding QuizFinished, Converter={StaticResource InverseBoolToVisibilityConverter}}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="2*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+        
+            <TextBlock 
+                Text="{Binding TimerText}"
+                FontSize="30"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                Margin="10"
+                Grid.Column="1"
+                />
+            <TextBlock 
+                Text="{Binding ActiveQuestion.Query}"
+                FontSize="30"
+                Grid.Row="1"
+                Grid.ColumnSpan="2"
+                HorizontalAlignment="Center"
+                />
+
+            <TextBlock 
+                Text="{Binding FeedbackText}"
+                Foreground="{Binding FeedbackColor}"
+                FontWeight="Bold"
+                FontSize="20"
+                HorizontalAlignment="Center"
+                Grid.Row="2"
+                Grid.ColumnSpan="2"
+                Margin="0 1 0 1"
+                />
+
+            <TextBlock 
+                Text="{Binding QuestionProgressText}"
+                Grid.Row="3"
+                Grid.ColumnSpan="2"
+                HorizontalAlignment="Center"
+                FontSize="18"
+                />
+
+            <Button 
+                Content="{Binding AnswerOptions[0]}"
+                Command="{Binding AnswerCommand}"
+                CommandParameter="{Binding AnswerOptions[0]}"
+                Grid.Row="4"
+                Width="250"
+                Height="70"
+                HorizontalAlignment="Right"
+                Margin="20 10 20 20" />
+            <Button 
+                Content="{Binding AnswerOptions[1]}"
+                Command="{Binding AnswerCommand}"
+                CommandParameter="{Binding AnswerOptions[1]}"
+                Grid.Row="5"
+                Width="250"
+                Height="70"
+                HorizontalAlignment="Right"
+                Margin="20 10 20 20"
+                />
+            <Button 
+                Content="{Binding AnswerOptions[2]}"
+                Command="{Binding AnswerCommand}"
+                CommandParameter="{Binding AnswerOptions[2]}"
+                Grid.Row="4"
+                Grid.Column="1"
+                Width="250"
+                Height="70"
+                HorizontalAlignment="Left"
+                Margin="20 10 20 20"
+                />
+            <Button 
+                Content="{Binding AnswerOptions[3]}"
+                Command="{Binding AnswerCommand}"
+                CommandParameter="{Binding AnswerOptions[3]}"
+                Grid.Row="5"
+                Grid.Column="1"
+                Width="250"
+                Height="70"
+                HorizontalAlignment="Left"
+                Margin="20 10 20 20"
+                />
+        </Grid>
     </Grid>
 </UserControl>
