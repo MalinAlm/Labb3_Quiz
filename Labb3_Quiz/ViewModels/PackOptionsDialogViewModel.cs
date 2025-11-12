@@ -9,7 +9,7 @@ using Labb3_Quiz.Models;
 
 namespace Labb3_Quiz.ViewModels
 {
-    internal class PackOptionsDialogViewModel : ViewModelBase
+    public class PackOptionsDialogViewModel : ViewModelBase
     {
         private string _packName;
         public string PackName

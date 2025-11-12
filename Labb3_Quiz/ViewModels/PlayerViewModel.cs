@@ -1,11 +1,11 @@
 ﻿using Labb3_Quiz.Command;
 using System.Windows.Threading;
-using System.Linq;
 using Labb3_Quiz.Models;
+
 
 namespace Labb3_Quiz.ViewModels
 {
-    internal class PlayerViewModel : ViewModelBase
+    public class PlayerViewModel : ViewModelBase
     {
         private readonly MainWindowViewModel? _mainWindowViewModel;
         private readonly DispatcherTimer _timer;
@@ -56,6 +56,30 @@ namespace Labb3_Quiz.ViewModels
             }
         }
 
+        private string _feedbackText;
+        public string FeedbackText
+        {
+            get => _feedbackText;
+            set
+            {
+                _feedbackText = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        private string _feedbackColor = "Black";
+        public string FeedbackColor
+        {
+            get => _feedbackColor;
+            set
+            {
+                _feedbackColor = value;
+                RaisePropertyChanged(); 
+            }
+        }
+
+
+        public DelegateCommand AnswerCommand { get; }
         public QuestionPackViewModel? ActivePack { get => _mainWindowViewModel?.ActivePack; }
         public PlayerViewModel(MainWindowViewModel? mainWindowViewModel) 
         {
@@ -68,6 +92,8 @@ namespace Labb3_Quiz.ViewModels
             };
            
             _timer.Tick += Timer_Tick;
+
+            AnswerCommand = new DelegateCommand(SelectAnswer);
         }
 
         private void Timer_Tick(object? sender, EventArgs e)
@@ -82,6 +108,23 @@ namespace Labb3_Quiz.ViewModels
                 _timer.Stop();
                 LoadNextQuestion();
             }
+        }
+
+        private async void SelectAnswer(object? selected)
+        {
+            if (ActiveQuestion == null || selected is not string answerText) return;
+
+            _timer.Stop();
+
+            bool isCorrect = answerText == ActiveQuestion.CorrectAnswer;
+
+            FeedbackText = isCorrect ? "Correct answer!" : "Incorrect Answer!";
+            FeedbackColor = isCorrect ? "Green" : "Red";
+
+            await Task.Delay(2000);
+
+            FeedbackText = string.Empty;
+            LoadNextQuestion();
         }
 
         public void LoadNextQuestion()

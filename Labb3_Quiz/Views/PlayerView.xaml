@@ -16,6 +16,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="2*"/>
             <RowDefinition Height="2*"/>
@@ -42,8 +43,19 @@
             />
 
         <TextBlock 
-            Text="{Binding QuestionProgressText}"
+            Text="{Binding FeedbackText}"
+            Foreground="{Binding FeedbackColor}"
+            FontWeight="Bold"
+            FontSize="20"
+            HorizontalAlignment="Center"
             Grid.Row="2"
+            Grid.ColumnSpan="2"
+            Margin="0 5 0 5"
+            />
+
+        <TextBlock 
+            Text="{Binding QuestionProgressText}"
+            Grid.Row="3"
             Grid.ColumnSpan="2"
             HorizontalAlignment="Center"
             FontSize="18"
@@ -53,7 +65,7 @@
             Content="{Binding AnswerOptions[0]}"
             Command="{Binding AnswerCommand}"
             CommandParameter="{Binding AnswerOptions[0]}"
-            Grid.Row="3"
+            Grid.Row="4"
             Width="250"
             Height="70"
             HorizontalAlignment="Right"
@@ -63,7 +75,7 @@
             Content="{Binding AnswerOptions[1]}"
             Command="{Binding AnswerCommand}"
             CommandParameter="{Binding AnswerOptions[1]}"
-            Grid.Row="4"
+            Grid.Row="5"
             Width="250"
             Height="70"
             HorizontalAlignment="Right"
@@ -73,7 +85,7 @@
             Content="{Binding AnswerOptions[2]}"
             Command="{Binding AnswerCommand}"
             CommandParameter="{Binding AnswerOptions[2]}"
-            Grid.Row="3"
+            Grid.Row="4"
             Grid.Column="1"
             Width="250"
             Height="70"
@@ -84,7 +96,7 @@
             Content="{Binding AnswerOptions[3]}"
             Command="{Binding AnswerCommand}"
             CommandParameter="{Binding AnswerOptions[3]}"
-            Grid.Row="4"
+            Grid.Row="5"
             Grid.Column="1"
             Width="250"
             Height="70"

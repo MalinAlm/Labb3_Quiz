@@ -7,7 +7,7 @@ using System.Collections.Specialized;
 namespace Labb3_Quiz.ViewModels
 {
 
-    internal class QuestionPackViewModel : ViewModelBase
+    public class QuestionPackViewModel : ViewModelBase
     {
         private readonly QuestionPack _model;
 

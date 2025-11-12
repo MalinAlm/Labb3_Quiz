@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Labb3_Quiz.Command;
 using Labb3_Quiz.Models;
 
 
 namespace Labb3_Quiz.ViewModels
 {
-    class CreateNewPackDialogViewModel :ViewModelBase
+   public class CreateNewPackDialogViewModel :ViewModelBase
     {
 
         private string _packName = "New Pack";

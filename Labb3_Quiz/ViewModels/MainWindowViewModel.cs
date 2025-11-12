@@ -5,7 +5,7 @@ using System.Windows;
 
 namespace Labb3_Quiz.ViewModels
 {
-    internal class MainWindowViewModel : ViewModelBase
+    public class MainWindowViewModel : ViewModelBase
     {
         public ObservableCollection<QuestionPackViewModel> Packs { get; } = new();
         public PlayerViewModel PlayerViewModel { get; }

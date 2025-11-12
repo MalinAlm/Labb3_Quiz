@@ -3,8 +3,8 @@ using System.Collections.Generic;
 
 namespace Labb3_Quiz.Models
 {
-    internal enum Difficulty { Easy, Medium, Hard }
-    internal class QuestionPack
+    public enum Difficulty { Easy, Medium, Hard }
+    public class QuestionPack
     {
         public QuestionPack(string name, Difficulty difficulty = Difficulty.Medium, int timeLimitInSeconds = 30)
         {

@@ -1,15 +1,10 @@
 ﻿using Labb3_Quiz.Command;
 using Labb3_Quiz.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace Labb3_Quiz.ViewModels
 {
-    internal class ConfigurationViewModel : ViewModelBase
+    public class ConfigurationViewModel : ViewModelBase
     {
 
         private readonly MainWindowViewModel? _mainWindowViewModel;
@@ -53,7 +48,7 @@ namespace Labb3_Quiz.ViewModels
 
         private void RemoveQuestion()
         {
-            if (ActivePack == null && ActiveQuestion == null) return;
+            if (ActivePack == null || ActiveQuestion == null) return;
 
             //var index = ActivePack.Questions.IndexOf(ActiveQuestion);
             ActivePack?.Questions.Remove(ActiveQuestion);
