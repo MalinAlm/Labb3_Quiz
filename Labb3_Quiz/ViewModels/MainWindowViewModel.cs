@@ -1,6 +1,7 @@
 ﻿using Labb3_Quiz.Models;    
 using System.Collections.ObjectModel;
 using Labb3_Quiz.Command;
+using System.Windows;
 
 namespace Labb3_Quiz.ViewModels
 {
@@ -59,6 +60,7 @@ namespace Labb3_Quiz.ViewModels
         public DelegateCommand ShowPlayerViewCommand { get; }
         public DelegateCommand ShowConfigurationViewCommand { get; }
         public DelegateCommand ToggleFullScreenCommand {  get; }
+        public DelegateCommand ExitProgramCommand { get; }
 
         public MainWindowViewModel()
 		{
@@ -74,7 +76,8 @@ namespace Labb3_Quiz.ViewModels
             ShowConfigurationViewCommand = new DelegateCommand(_ => IsPlayMode = false);
             ShowPlayerViewCommand = new DelegateCommand(_ => IsPlayMode = true, _=> ActivePack != null && ActivePack.Questions.Count > 0);
 			OpenCreateNewPackDialogCommand = new DelegateCommand(_ => OpenCreateNewPackDialog());
-            ToggleFullScreenCommand = new DelegateCommand(_=> IsFullScreen = !IsFullScreen);
+            ToggleFullScreenCommand = new DelegateCommand(_ => IsFullScreen = !IsFullScreen);
+            ExitProgramCommand = new DelegateCommand(_ => Application.Current.Shutdown());
            
         }
 

@@ -20,7 +20,10 @@
                     Command="{Binding ConfigurationViewModel.RemoveQuestionCommand}" />
         <KeyBinding Key="O"
                     Modifiers="Ctrl"
-                    Command="{Binding ConfigurationViewModel.OpenPackOptionsDialogCommand}" />      
+                    Command="{Binding ConfigurationViewModel.OpenPackOptionsDialogCommand}" />
+        <KeyBinding Key="F4"
+                    Modifiers="Alt"
+                    Command="{Binding ExitProgramCommand}"/>
         <KeyBinding Key="P"
                     Modifiers="Ctrl"
                     Command="{Binding ShowPlayerViewCommand}" />
