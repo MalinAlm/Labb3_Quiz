@@ -75,8 +75,8 @@ namespace Labb3_Quiz.ViewModels
            
             ShowConfigurationViewCommand = new DelegateCommand(_ =>
             {
-                PlayerViewModel.StopQuiz();
                 IsPlayMode = false;
+                PlayerViewModel.StopQuiz();
             });
 
             ShowPlayerViewCommand = new DelegateCommand(_ => 
