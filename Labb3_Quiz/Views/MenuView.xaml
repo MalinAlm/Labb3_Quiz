@@ -41,13 +41,16 @@
                 Header="_Play" 
                 Command="{Binding ShowPlayerViewCommand}"
                 InputGestureText="Ctrl+P" 
-                Icon="{fa:Icon Play}" 
+                Icon="{fa:Icon Play}"                
+                IsEnabled="{Binding IsEditMode}"
+
                 />
             <MenuItem 
                 Header="_Edit" 
                 Command="{Binding ShowConfigurationViewCommand}"
                 InputGestureText="Ctrl+E" 
                 Icon="{fa:Icon Gear}" 
+                IsEnabled="{Binding IsPlayMode}"
                 />
             <MenuItem Header="_Fullscreen" InputGestureText="Alt+Enter" Icon="{fa:Icon Expand}" />
         </MenuItem>
