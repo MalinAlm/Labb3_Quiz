@@ -1,9 +1,4 @@
 ﻿using Labb3_Quiz.Command;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Threading;
 
 namespace Labb3_Quiz.ViewModels
@@ -19,27 +14,31 @@ namespace Labb3_Quiz.ViewModels
         public PlayerViewModel(MainWindowViewModel? mainWindowViewModel) 
         {
             this._mainWindowViewModel = mainWindowViewModel;
-
-            SetPackNameCommand = new DelegateCommand(SetPackName, CanSetPackName);
-            DemoText = string.Empty;
-
-
-            _remainingSeconds = 30;
+                
             _timer = new DispatcherTimer()
             {
                 Interval = TimeSpan.FromSeconds(1.0)
             };
-            //var timer = new DispatcherTimer(); //spara inte i variabel, spara i field. 
-            //timer.Interval = TimeSpan.FromSeconds(1.0); //hur ofta den ska köras, 1.0 är en sekunden.
+           
             _timer.Tick += Timer_Tick;
+        }
+
+        public void StartQuiz()
+        {
+            _timer.Stop();
+            _remainingSeconds = ActivePack?.TimeLimitInSeconds ?? 30;
+            TimerText = _remainingSeconds.ToString();
             _timer.Start();
-            //Lägg till stoppmetod här
-            //Spara i field och räkna sekunder.
+        }
+
+        public void StopQuiz()
+        {
+            _timer.Stop();
+            TimerText = _remainingSeconds.ToString();
         }
 
         private void Timer_Tick(object? sender, EventArgs e)
         {
-            //ActivePack.Name += "+";
             if (_remainingSeconds > 0)
             {
                 _remainingSeconds--;
@@ -48,7 +47,7 @@ namespace Labb3_Quiz.ViewModels
             else
             {
                 _timer.Stop();
-
+                TimerText = "Time's up!";
             }
         }
 
@@ -61,30 +60,6 @@ namespace Labb3_Quiz.ViewModels
                 _timerText = value;
                 RaisePropertyChanged();
             }
-        }
-
-        private string _demoText;
-
-        public string DemoText
-        {
-            get { return _demoText; }
-            set 
-            { 
-                _demoText = value;
-                RaisePropertyChanged();
-                SetPackNameCommand.RaiseCanExecuteChanged();
-            }
-        }
-
-
-        private bool CanSetPackName(object? arg)
-        {
-            return DemoText.Length > 0;
-        }
-
-        private void SetPackName(object? obj)
-        {
-            ActivePack.Name = DemoText;
         }
     }
 }

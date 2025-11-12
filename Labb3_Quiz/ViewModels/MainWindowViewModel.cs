@@ -73,12 +73,21 @@ namespace Labb3_Quiz.ViewModels
             PlayerViewModel = new PlayerViewModel(this);
 			ConfigurationViewModel = new ConfigurationViewModel(this);
            
-            ShowConfigurationViewCommand = new DelegateCommand(_ => IsPlayMode = false);
-            ShowPlayerViewCommand = new DelegateCommand(_ => IsPlayMode = true, _=> ActivePack != null && ActivePack.Questions.Count > 0);
+            ShowConfigurationViewCommand = new DelegateCommand(_ =>
+            {
+                PlayerViewModel.StopQuiz();
+                IsPlayMode = false;
+            });
+
+            ShowPlayerViewCommand = new DelegateCommand(_ => 
+            {
+                IsPlayMode = true;
+                PlayerViewModel.StartQuiz();
+            }, _ => ActivePack != null && ActivePack.Questions.Count > 0 );
+
 			OpenCreateNewPackDialogCommand = new DelegateCommand(_ => OpenCreateNewPackDialog());
             ToggleFullScreenCommand = new DelegateCommand(_ => IsFullScreen = !IsFullScreen);
             ExitProgramCommand = new DelegateCommand(_ => Application.Current.Shutdown());
-           
         }
 
         private void OpenCreateNewPackDialog()
