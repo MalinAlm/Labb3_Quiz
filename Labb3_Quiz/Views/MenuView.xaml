@@ -15,20 +15,35 @@
                 Icon="{fa:Icon FolderPlus}" 
                 Command="{Binding OpenCreateNewPackDialogCommand}"
                 />
-            <!--<MenuItem Header="_Select Question Pack" Icon="{fa:Icon FolderOpen}"/>-->
-            <MenuItem Header="_Select Question Pack" Icon="{fa:Icon FolderOpen}"
-                      ItemsSource="{Binding Packs}">
+            
+            <MenuItem 
+                Header="_Select Question Pack" 
+                Icon="{fa:Icon FolderOpen}"
+                ItemsSource="{Binding Packs}">
                 <MenuItem.ItemContainerStyle>
                 <Style TargetType="MenuItem">
-                    <Setter Property="Header" Value="{Binding Name}"/>
-                    <Setter Property="Command" Value="{Binding DataContext.SelectPackCommand,
+                    <Setter 
+                        Property="Header" 
+                        Value="{Binding Name}"
+                        />
+                    <Setter 
+                        Property="Command" 
+                        Value="{Binding DataContext.SelectPackCommand,
                         RelativeSource={RelativeSource AncestorType=Menu}}"/>
                     <Setter Property="CommandParameter" Value="{Binding}"/>
                 </Style>
             </MenuItem.ItemContainerStyle>
             </MenuItem>
-            <MenuItem Header="_Delete Question Pack" Icon="{fa:Icon FolderMinus}"/>
-            <MenuItem Header="_Import Questions" Icon="{fa:Icon CloudArrowDown}" InputGestureText="Ctrl+I" />
+            
+            <MenuItem 
+                Header="_Delete Question Pack" 
+                Icon="{fa:Icon FolderMinus}"
+                />
+            <MenuItem 
+                Header="_Import Questions" 
+                Icon="{fa:Icon CloudArrowDown}" 
+                InputGestureText="Ctrl+I"
+                />
             <Separator />
             <MenuItem 
                 Header="E_xit" 
@@ -49,7 +64,11 @@
                 Icon="{fa:Icon Minus}" 
                 InputGestureText="Delete"
                 />
-            <MenuItem Header="Pack Options" Command="{Binding PlayerViewModel.OpenPackOptionsDialogCommand}" InputGestureText="Ctrl+O" Icon="{fa:Icon Sliders}" />
+            <MenuItem 
+                Header="Pack Options" 
+                Command="{Binding ConfigurationView.OpenPackOptionsDialogCommand}" 
+                InputGestureText="Ctrl+O" Icon="{fa:Icon Sliders}" 
+                />
         </MenuItem>
         <MenuItem Header="_View">
             <MenuItem 
@@ -58,7 +77,6 @@
                 InputGestureText="Ctrl+P" 
                 Icon="{fa:Icon Play}"                
                 IsEnabled="{Binding IsEditMode}"
-
                 />
             <MenuItem 
                 Header="_Edit" 
@@ -72,7 +90,6 @@
                 Command="{Binding ToggleFullScreenCommand}"
                 InputGestureText="Alt+Enter" 
                 Icon="{fa:Icon Expand}" 
-                
                 />
         </MenuItem>
         

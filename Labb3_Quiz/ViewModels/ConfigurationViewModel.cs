@@ -18,6 +18,12 @@ namespace Labb3_Quiz.ViewModels
             {
                 _activeQuestion = value;
                 RaisePropertyChanged();
+
+                if (_mainWindowViewModel != null)
+                {
+                    _mainWindowViewModel.SaveActivePack();
+                }
+
                 RemoveQuestionCommand?.RaiseCanExecuteChanged();
             }
         }
@@ -59,7 +65,7 @@ namespace Labb3_Quiz.ViewModels
             ActivePack.SyncToModel();
             _mainWindowViewModel.SaveActivePack();
         }
-
+            
         private bool CanRemoveQuestion()
         {
             return ActiveQuestion != null;

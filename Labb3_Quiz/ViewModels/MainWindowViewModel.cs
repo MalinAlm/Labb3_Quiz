@@ -152,8 +152,7 @@ namespace Labb3_Quiz.ViewModels
 
             ActivePack?.SyncToModel();
 
-            var allPacks = Packs.Select(p => p.Model).ToList();
-            _dataService.SavePacks(allPacks);   
+            _dataService.SavePacks(Packs.Select(p => p.Model).ToList());   
         }
 
 	}
