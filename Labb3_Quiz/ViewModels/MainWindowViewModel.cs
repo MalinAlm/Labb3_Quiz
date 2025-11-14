@@ -71,7 +71,7 @@ namespace Labb3_Quiz.ViewModels
 
             _dataService = new DataService();
 
-            _ = LoadPacksAsync();
+            LoadPacks();
 
             PlayerViewModel = new PlayerViewModel(this);
 			ConfigurationViewModel = new ConfigurationViewModel(this);
@@ -101,7 +101,7 @@ namespace Labb3_Quiz.ViewModels
             ExitProgramCommand = new DelegateCommand(_ => Application.Current.Shutdown());
         }
 
-        private async Task OpenCreateNewPackDialog()
+        private void OpenCreateNewPackDialog()
 		{
 			var dialog = new Dialogs.CreateNewPackDialog();
 			dialog.DataContext = new CreateNewPackDialogViewModel();
@@ -110,18 +110,24 @@ namespace Labb3_Quiz.ViewModels
 			{
 				var dialogViewModel = (CreateNewPackDialogViewModel)dialog.DataContext;
 
-				var newPack = new QuestionPack(dialogViewModel.PackName, dialogViewModel.SelectedDifficulty, dialogViewModel.TimeLimit);
+				var newPack = new QuestionPack(
+                    dialogViewModel.Name, 
+                    dialogViewModel.Difficulty, 
+                    dialogViewModel.TimeLimitInSeconds);
+
 				Packs.Add(new QuestionPackViewModel(newPack));
 				ActivePack = Packs.Last();
 
                 ActivePack.SyncToModel();
-                await _dataService.SaveOrUpdatePacksAsync(ActivePack.Model);
+
+                var allPacks = Packs.Select(p => p.Model).ToList();
+                _dataService.SavePacks(allPacks);
             }
 		}
 
-        private async Task LoadPacksAsync()
+        private void LoadPacks()
         {
-            var packs = await _dataService.LoadPacksAsync();
+            var packs = _dataService.LoadPacks();
 
             if (packs.Any())
             {
@@ -140,12 +146,14 @@ namespace Labb3_Quiz.ViewModels
             }
         }
 
-        public async Task SaveActivePackAsync()
+        public void SaveActivePack()
         {
+            if (ActivePack == null) return;
 
-            if (ActivePack != null) return;
             ActivePack?.SyncToModel();
-            await _dataService.SaveOrUpdatePacksAsync(ActivePack.Model);
+
+            var allPacks = Packs.Select(p => p.Model).ToList();
+            _dataService.SavePacks(allPacks);   
         }
 
 	}

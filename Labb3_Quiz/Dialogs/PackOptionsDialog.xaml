@@ -18,7 +18,7 @@
         <StackPanel Grid.Row="0" Margin="10 0">
             <Label Content="Pack name:"/>
             <TextBox 
-            Text="{Binding PackName, UpdateSourceTrigger=PropertyChanged}"
+            Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
             />
         </StackPanel>
         <StackPanel Grid.Row="1" Margin="10 0">
@@ -26,7 +26,7 @@
             <ComboBox 
          Grid.Row="1" 
          ItemsSource="{Binding Difficulties}" 
-         SelectedItem="{Binding SelectedDifficulty}" 
+         SelectedItem="{Binding Difficulty}" 
          />
         </StackPanel>
 
@@ -34,14 +34,14 @@
 
             <StackPanel Orientation="Horizontal">
                 <Label FontWeight="Bold"  Padding="0" Content="Time limit:"/>
-                <TextBlock HorizontalAlignment="Right" Text="{Binding TimeLimit}" />
+                <TextBlock HorizontalAlignment="Right" Text="{Binding TimeLimitÍnSeconds}" />
                 <TextBlock VerticalAlignment="Bottom" HorizontalAlignment="Right" Text="seconds" />
             </StackPanel>
 
             <Slider 
             Minimum="5"
             Maximum="120"
-            Value="{Binding TimeLimit, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            Value="{Binding TimeLimitInSeconds, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             TickFrequency="5"
                 TickPlacement="BottomRight"
             IsSnapToTickEnabled="True"

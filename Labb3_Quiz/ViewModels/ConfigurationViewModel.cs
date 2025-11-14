@@ -1,6 +1,5 @@
 ﻿using Labb3_Quiz.Command;
 using Labb3_Quiz.Models;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace Labb3_Quiz.ViewModels
@@ -8,7 +7,7 @@ namespace Labb3_Quiz.ViewModels
     public class ConfigurationViewModel : ViewModelBase
     {
 
-        private readonly MainWindowViewModel? _mainWindowViewModel;
+        private readonly MainWindowViewModel _mainWindowViewModel;
         private Question? _activeQuestion;
 
         public QuestionPackViewModel? ActivePack { get => _mainWindowViewModel?.ActivePack; }
@@ -36,7 +35,7 @@ namespace Labb3_Quiz.ViewModels
             OpenPackOptionsDialogCommand = new DelegateCommand(_ => OpenPackoptionsDialog());
 
         }
-        private async Task AddQuestion()
+        private void AddQuestion()
         {
             if (ActivePack == null) return;
 
@@ -46,10 +45,10 @@ namespace Labb3_Quiz.ViewModels
             ActiveQuestion = newQuestion;
 
             ActivePack.SyncToModel();
-            await _mainWindowViewModel.SaveActivePackAsync();
+             _mainWindowViewModel.SaveActivePack();
         }
         
-        private async void RemoveQuestion()
+        private void RemoveQuestion()
         {
             if (ActivePack == null || ActiveQuestion == null) return;
 
@@ -58,7 +57,7 @@ namespace Labb3_Quiz.ViewModels
             ActiveQuestion = null;
 
             ActivePack.SyncToModel();
-            await _mainWindowViewModel.SaveActivePackAsync();
+            _mainWindowViewModel.SaveActivePack();
         }
 
         private bool CanRemoveQuestion()
@@ -78,6 +77,9 @@ namespace Labb3_Quiz.ViewModels
             dialog.ShowDialog();
 
             viewModel.ApplyChanges(ActivePack.Model);
+
+            _mainWindowViewModel.SaveActivePack();
+
             RaisePropertyChanged(nameof(ActivePack));
         }
     }

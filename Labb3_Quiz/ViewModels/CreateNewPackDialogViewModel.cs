@@ -9,31 +9,31 @@ namespace Labb3_Quiz.ViewModels
    public class CreateNewPackDialogViewModel :ViewModelBase
     {
 
-        private string _packName = "New Pack";
-        public string PackName
+        private string _name = "New Pack";
+        public string Name
         {
-            get => _packName;
+            get => _name;
             set
             {
-                if (_packName != value)
+                if (_name != value)
                 {
-                    _packName = value;
+                    _name = value;
                     RaisePropertyChanged();
                 }
             }
         }
         public ObservableCollection<Difficulty> Difficulties { get; } = new(Enum.GetValues(typeof(Difficulty)).Cast<Difficulty>());
-        public Difficulty SelectedDifficulty { get; set; } = Difficulty.Medium;
+        public Difficulty Difficulty { get; set; } = Difficulty.Medium;
 
-        private int _timeLimit = 30;
-        public int TimeLimit 
+        private int _timeLimitInSeconds = 30;
+        public int TimeLimitInSeconds 
         { 
-            get => _timeLimit;
+            get => _timeLimitInSeconds;
             set
             {
-                if (_timeLimit != value)
+                if (_timeLimitInSeconds != value)
                 {
-                    _timeLimit = value;
+                    _timeLimitInSeconds = value;
                     RaisePropertyChanged();
                 }
             }

@@ -11,36 +11,36 @@ namespace Labb3_Quiz.ViewModels
 {
     public class PackOptionsDialogViewModel : ViewModelBase
     {
-        private string _packName;
-        public string PackName
+        private string _name;
+        public string Name
         {
-            get => _packName;
+            get => _name;
             set 
             { 
-                _packName = value; 
+                _name = value; 
                 RaisePropertyChanged();
             }
 
         }
 
-        private Difficulty _selectedDifficulty;
-        public Difficulty SelectedDifficulty
+        private Difficulty _difficulty;
+        public Difficulty Difficulty
         {
-            get => _selectedDifficulty;
+            get => _difficulty;
             set
             {
-                _selectedDifficulty = value;
+                _difficulty = value;
                 RaisePropertyChanged();
             }
         }
 
-        private int _timeLimit;
-        public int TimeLimit
+        private int _timeLimitInSeconds;
+        public int TimeLimitInSeconds
         {
-            get => _timeLimit;
+            get => _timeLimitInSeconds;
             set
             {
-                _timeLimit = value;
+                _timeLimitInSeconds = value;
                 RaisePropertyChanged();
             }
         }
@@ -50,16 +50,16 @@ namespace Labb3_Quiz.ViewModels
 
         public PackOptionsDialogViewModel(QuestionPack pack)
         {
-            _packName = pack.Name;
-            _selectedDifficulty = pack.Difficulty;
-            _timeLimit = pack.TimeLimitInSeconds;
+            _name = pack.Name;
+            _difficulty = pack.Difficulty;
+            _timeLimitInSeconds = pack.TimeLimitInSeconds;
         }
 
         public void ApplyChanges(QuestionPack pack)
         {
-            pack.Name = _packName;
-            pack.Difficulty = _selectedDifficulty;
-            pack.TimeLimitInSeconds = _timeLimit;
+            pack.Name = _name;
+            pack.Difficulty = _difficulty;
+            pack.TimeLimitInSeconds = _timeLimitInSeconds;
         }
     }
 }

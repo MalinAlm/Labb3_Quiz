@@ -8,104 +8,52 @@ using System.Text.Json;
 using System.IO;
 using System.Windows;
 
+
 namespace Labb3_Quiz.Services
 {
     internal class DataService
     {
+
+        private readonly string _folderPath;
         private readonly string _filePath;
 
         public DataService()
         {
-            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-            string _folderPath = Path.Combine(appDataPath, "Labb3_Quiz");
+            _folderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Labb3_Quiz");
 
-            try
-            {
-                if (!Directory.Exists(_folderPath))
-                {
-                    Directory.CreateDirectory(_folderPath);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error creating folder: {ex.Message}");
-            }
+            Directory.CreateDirectory(_folderPath);
 
             _filePath = Path.Combine(_folderPath, "packs.json");
         }
 
-        public async Task<List<QuestionPack>> LoadPacksAsync()
+        private static JsonSerializerOptions JsonOptions => new()
         {
+            WriteIndented = true,
+            AllowTrailingCommas = true
+        };
+
+        public List<QuestionPack> LoadPacks()
+        {
+            if (!File.Exists(_filePath))
+                return new List<QuestionPack>();
+
             try
             {
-                if (!File.Exists(_filePath))
-                {
-                    return new List<QuestionPack>();
-                }
-
-                using FileStream stream = File.OpenRead(_filePath);
-                var options = new JsonSerializerOptions { AllowTrailingCommas = true };
-
-                var packs = await JsonSerializer.DeserializeAsync<List<QuestionPack>>(stream, options);
-                return packs ?? new List<QuestionPack>();
+                var json = File.ReadAllText(_filePath);
+                return JsonSerializer.Deserialize<List<QuestionPack>>(json, JsonOptions) ?? new List<QuestionPack>();
             }
-            catch (Exception ex)
+            catch (Exception ex) 
             {
-                MessageBox.Show($"Error loading packs: {ex.Message}");
+                MessageBox.Show($"Couldn't read file {ex.Message}");
                 return new List<QuestionPack>();
             }
         }
 
-        public async Task SaveOrUpdatePacksAsync(QuestionPack pack)
+        public void SavePacks(List<QuestionPack> packs)
         {
-            try
-            {
-                var packs = await LoadPacksAsync();
-
-                var existing = packs.FirstOrDefault(p => p.Name == pack.Name);
-
-                if (existing != null)
-                {
-                    existing.Difficulty = pack.Difficulty;
-                    existing.Name = pack.Name;
-                    existing.Questions = pack.Questions;
-                }
-                else
-                {
-                    packs.Add(pack);
-                }
-
-                var options = new JsonSerializerOptions { WriteIndented = true };
-                using FileStream stream = File.Create(_filePath);
-                await JsonSerializer.SerializeAsync(stream, packs, options);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error saving packs: {ex.Message}");
-            }
+            var json = JsonSerializer.Serialize(packs, JsonOptions);
+            File.WriteAllText(_filePath, json);
         }
 
-        public async Task DeletePackAsync(string packName)
-        {
-            try
-            {
-                var packs = await LoadPacksAsync();
-
-                var toRemove = packs.FirstOrDefault(p => p.Name == packName);
-
-                if (toRemove != null)
-                {
-                    packs.Remove(toRemove);
-
-                    var options = new JsonSerializerOptions { WriteIndented = true };
-                    using FileStream stream = File.Create(_filePath);
-                    await JsonSerializer.SerializeAsync(stream, packs, options);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error deleting pack: {ex.Message}");
-            }
-        }
     }
 }
