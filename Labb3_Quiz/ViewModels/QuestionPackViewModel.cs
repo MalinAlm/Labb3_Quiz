@@ -11,6 +11,7 @@ namespace Labb3_Quiz.ViewModels
     {
         private readonly QuestionPack _model;
         private readonly Action _saveAction;
+        private readonly MainWindowViewModel _mainWindowViewModel;
 
         public string Name
         {
@@ -46,15 +47,16 @@ namespace Labb3_Quiz.ViewModels
         }
 
         public ObservableCollection<QuestionViewModel> Questions { get; }
-        public QuestionPackViewModel(QuestionPack model, Action saveAction)
+        public QuestionPackViewModel(QuestionPack model, Action saveAction, MainWindowViewModel mainWindowViewModel)
         {
             _model = model;
             _saveAction = saveAction;
 
             Questions = new ObservableCollection<QuestionViewModel>(
-            _model.Questions.Select(q => new QuestionViewModel(q, saveAction)));
+            _model.Questions.Select(q => new QuestionViewModel(q, saveAction, () => mainWindowViewModel.ShowPlayerViewCommand.RaiseCanExecuteChanged())));
 
             Questions.CollectionChanged += Questions_CollectionChanged;
+            _mainWindowViewModel = mainWindowViewModel;
         }
 
 
@@ -71,6 +73,16 @@ namespace Labb3_Quiz.ViewModels
             }
 
             _saveAction();
+        }
+
+        public bool IsPlayable()
+        {
+            return Questions.Any() && Questions.All(q =>
+            !string.IsNullOrWhiteSpace(q.Query) &&
+            !string.IsNullOrWhiteSpace(q.CorrectAnswer) &&
+            !string.IsNullOrWhiteSpace(q.IncorrectAnswer1) &&
+            !string.IsNullOrWhiteSpace(q.IncorrectAnswer2) &&
+            !string.IsNullOrWhiteSpace(q.IncorrectAnswer3));
         }
 
         public void SyncToModel()

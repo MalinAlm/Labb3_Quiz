@@ -42,7 +42,8 @@ namespace Labb3_Quiz.ViewModels
 
             var newQuestionModel = new Question("New Question", string.Empty, string.Empty, string.Empty, string.Empty);
 
-            var newQuestionViewModel = new QuestionViewModel(newQuestionModel, _mainWindowViewModel.SaveActivePack);
+            var newQuestionViewModel = new QuestionViewModel(newQuestionModel, _mainWindowViewModel.SaveActivePack,
+                () => _mainWindowViewModel.ShowPlayerViewCommand.RaiseCanExecuteChanged());
                 
             ActivePack.Questions.Add(newQuestionViewModel);
             ActiveQuestion = newQuestionViewModel;
@@ -56,6 +57,8 @@ namespace Labb3_Quiz.ViewModels
 
             ActivePack.Questions.Remove(ActiveQuestion);
             ActiveQuestion = null;
+
+            _mainWindowViewModel.ShowPlayerViewCommand.RaiseCanExecuteChanged();
         }
             
         private bool CanRemoveQuestion() => ActiveQuestion != null;

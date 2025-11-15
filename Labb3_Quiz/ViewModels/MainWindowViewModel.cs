@@ -88,7 +88,7 @@ namespace Labb3_Quiz.ViewModels
             {
                 IsPlayMode = true;
                 PlayerViewModel.StartQuiz();
-            }, _ => ActivePack != null && ActivePack.Questions.Count > 0 );
+            }, _ => ActivePack != null && ActivePack.IsPlayable());
 
             SelectPackCommand = new DelegateCommand(selectedPack => 
             { 
@@ -121,7 +121,7 @@ namespace Labb3_Quiz.ViewModels
                     dialogViewModel.Difficulty,     
                     dialogViewModel.TimeLimitInSeconds);
 
-                var newPack = new QuestionPackViewModel(newPackModel, SaveActivePack);
+                var newPack = new QuestionPackViewModel(newPackModel, SaveActivePack, this);
                 Packs.Add(newPack);
 
                 ActivePack = newPack;
@@ -141,7 +141,7 @@ namespace Labb3_Quiz.ViewModels
             {
                 foreach (var pack in packs)
                 {
-                    Packs.Add(new QuestionPackViewModel(pack, SaveActivePack));
+                    Packs.Add(new QuestionPackViewModel(pack, SaveActivePack, this));
                 }
 
                 ActivePack = Packs.First();
@@ -149,7 +149,7 @@ namespace Labb3_Quiz.ViewModels
             else
             {
                 var newPack = new QuestionPack("Default Pack");
-                Packs.Add(new QuestionPackViewModel(newPack, SaveActivePack));
+                Packs.Add(new QuestionPackViewModel(newPack, SaveActivePack, this));
                 ActivePack = Packs.First();
             }
         }

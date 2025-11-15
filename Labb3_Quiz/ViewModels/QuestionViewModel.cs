@@ -6,11 +6,13 @@ namespace Labb3_Quiz.ViewModels
     {
         private readonly Question _model;
         private readonly Action _saveAction;
+        private readonly Action _updatePlayCommand;
 
-        public QuestionViewModel(Question model, Action saveAction)
+        public QuestionViewModel(Question model, Action saveAction, Action updatePlayCommand)
         {
             _model = model;
             _saveAction = saveAction;
+            _updatePlayCommand = updatePlayCommand;
 
             ValidateIncorrectAnswers();
         }
@@ -25,6 +27,7 @@ namespace Labb3_Quiz.ViewModels
                 _model.Query = value;
                 RaisePropertyChanged();
                 _saveAction();
+                _updatePlayCommand();
             }
         }
 
@@ -36,6 +39,7 @@ namespace Labb3_Quiz.ViewModels
                 _model.CorrectAnswer = value;
                 RaisePropertyChanged();
                 _saveAction();
+                _updatePlayCommand();
             }
         }
 
@@ -47,6 +51,7 @@ namespace Labb3_Quiz.ViewModels
                 _model.IncorrectAnswers[0] = value;
                 RaisePropertyChanged();
                 _saveAction();
+                _updatePlayCommand();
             }
         }
         public string IncorrectAnswer2
@@ -57,6 +62,7 @@ namespace Labb3_Quiz.ViewModels
                 _model.IncorrectAnswers[1] = value;
                 RaisePropertyChanged();
                 _saveAction();
+                _updatePlayCommand();
             }
         }
         public string IncorrectAnswer3
@@ -67,6 +73,7 @@ namespace Labb3_Quiz.ViewModels
                 _model.IncorrectAnswers[2] = value;
                 RaisePropertyChanged();
                 _saveAction();
+                _updatePlayCommand();
             }
         }
 
