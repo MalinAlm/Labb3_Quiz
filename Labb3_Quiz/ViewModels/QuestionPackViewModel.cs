@@ -10,6 +10,7 @@ namespace Labb3_Quiz.ViewModels
     public class QuestionPackViewModel : ViewModelBase
     {
         private readonly QuestionPack _model;
+        private readonly Action _saveAction;
 
         public string Name
         {
@@ -18,6 +19,7 @@ namespace Labb3_Quiz.ViewModels
             {
                 _model.Name = value;
                 RaisePropertyChanged();
+                _saveAction();
             }
         }
 
@@ -28,6 +30,7 @@ namespace Labb3_Quiz.ViewModels
             {
                 _model.Difficulty = value;
                 RaisePropertyChanged();
+                _saveAction();
             }
         }
 
@@ -38,38 +41,43 @@ namespace Labb3_Quiz.ViewModels
             {
                 _model.TimeLimitInSeconds = value;
                 RaisePropertyChanged();
+                _saveAction();
             }
         }
 
-        public QuestionPack Model => _model;
-
-        public ObservableCollection<Question> Questions { get; set; }
-        public QuestionPackViewModel(QuestionPack model)
+        public ObservableCollection<QuestionViewModel> Questions { get; }
+        public QuestionPackViewModel(QuestionPack model, Action saveAction)
         {
             _model = model;
-            Questions = new ObservableCollection<Question>(_model.Questions);
+            _saveAction = saveAction;
+
+            Questions = new ObservableCollection<QuestionViewModel>(
+            _model.Questions.Select(q => new QuestionViewModel(q, saveAction)));
+
             Questions.CollectionChanged += Questions_CollectionChanged;
         }
+
 
         private void Questions_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.Action == NotifyCollectionChangedAction.Add && e.NewItems != null)
-                foreach (Question q in e.NewItems) _model.Questions.Add(q);
+            {
+                foreach (QuestionViewModel questionVm in e.NewItems) _model.Questions.Add(questionVm.Model);
+            }
 
             if (e.Action == NotifyCollectionChangedAction.Remove && e.OldItems != null)
-                foreach (Question q in e.OldItems) _model.Questions.Remove(q);
+            {
+                foreach (QuestionViewModel questionVm in e.OldItems) _model.Questions.Remove(questionVm.Model);
+            }
 
-            if (e.Action == NotifyCollectionChangedAction.Replace && e.OldItems != null && e.NewItems != null)
-                _model.Questions[e.OldStartingIndex] = (Question)e.NewItems[0]!;
-
-            if (e.Action == NotifyCollectionChangedAction.Reset)
-                _model.Questions.Clear();
+            _saveAction();
         }
 
         public void SyncToModel()
         {
-            _model.Questions = Questions.ToList();
+            _model.Questions = Questions.Select(qvm => qvm.Model).ToList();
         }
+        public QuestionPack Model => _model;
 
     }
 

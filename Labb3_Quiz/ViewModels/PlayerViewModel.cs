@@ -13,9 +13,10 @@ namespace Labb3_Quiz.ViewModels
         private readonly DispatcherTimer _timer;
         private int _remainingSeconds;
         private int _currentQuestionIndex;
+        private static readonly Random _shuffle = new();
 
-        private Question? _activeQuestion;
-        public Question? ActiveQuestion
+        private QuestionViewModel? _activeQuestion;
+        public QuestionViewModel? ActiveQuestion
         {
             get => _activeQuestion;
             set
@@ -37,7 +38,7 @@ namespace Labb3_Quiz.ViewModels
             }
         }
 
-        private List<string> _answerOptions;
+        private List<string> _answerOptions = new();
         public List<string> AnswerOptions
         {
             get => _answerOptions;
@@ -48,8 +49,8 @@ namespace Labb3_Quiz.ViewModels
             }
         }
 
-        private string _selectedAnswer;
-        public string SelectedAnswer
+        private string? _selectedAnswer;
+        public string? SelectedAnswer
         {
             get => _selectedAnswer;
             set
@@ -130,6 +131,7 @@ namespace Labb3_Quiz.ViewModels
         public DelegateCommand AnswerCommand { get; }
         public DelegateCommand RestartCommand { get; }
         public QuestionPackViewModel? ActivePack { get => _mainWindowViewModel?.ActivePack; }
+
         public PlayerViewModel(MainWindowViewModel? mainWindowViewModel) 
         {
             this._mainWindowViewModel = mainWindowViewModel;
@@ -200,13 +202,15 @@ namespace Labb3_Quiz.ViewModels
             ActiveQuestion = ActivePack.Questions[_currentQuestionIndex];
             _currentQuestionIndex++;
 
-            var allAnswers = new List<string>(ActiveQuestion.IncorrectAnswers)
+            var allAnswers = new List<string>
             {
+                ActiveQuestion.IncorrectAnswer1,
+                ActiveQuestion.IncorrectAnswer2,
+                ActiveQuestion.IncorrectAnswer3,
                 ActiveQuestion.CorrectAnswer
             };
 
-            var Random = new Random();
-            AnswerOptions = allAnswers.OrderBy(_ => Random.Next()).ToList();
+            AnswerOptions = allAnswers.OrderBy(_ => _shuffle.Next()).ToList();
 
             _remainingSeconds = ActivePack.TimeLimitInSeconds > 0 ? ActivePack.TimeLimitInSeconds : 30;
             TimerText = _remainingSeconds.ToString();
@@ -217,6 +221,12 @@ namespace Labb3_Quiz.ViewModels
         }
         public void StartQuiz()
         {
+            QuizFinished = false;
+            Score = 0;
+            FeedbackText = string.Empty;
+            FeedbackColor = Brushes.Black;
+            SelectedAnswer = null;
+
             _currentQuestionIndex = 0;
             LoadNextQuestion();
         }
@@ -224,10 +234,16 @@ namespace Labb3_Quiz.ViewModels
         public void StopQuiz()
         {
             _timer.Stop();
+
+            ActiveQuestion = null;
+            AnswerOptions = new List<string>();
+            FeedbackText= string.Empty;
+            FeedbackColor = Brushes.Black;
+            SelectedAnswer = null;
+
             _currentQuestionIndex = 0;
             _remainingSeconds = 0;
             TimerText = string.Empty;
-            ActiveQuestion = null;
         }
 
         public void RestartQuiz()

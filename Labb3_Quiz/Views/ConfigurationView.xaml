@@ -59,16 +59,16 @@
             <TextBox Height="90" Margin="0 0 0 30" Text="{Binding ActiveQuestion.Query, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  />
 
             <Label Content="Correct Answer:" />
-            <TextBox Margin="0 0 0 5" Text="{Binding ActiveQuestion.CorrectAnswer}" />
+            <TextBox Margin="0 0 0 5" Text="{Binding ActiveQuestion.CorrectAnswer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
             <Label Content="First Incorrect Answer:" />
-            <TextBox Margin="0 0 0 5" Text="{Binding ActiveQuestion.IncorrectAnswers[0]}"/>
+            <TextBox Margin="0 0 0 5" Text="{Binding ActiveQuestion.IncorrectAnswer1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
             <Label Content="Second Incorrect Answer:" />
-            <TextBox Margin="0 0 0 5" Text="{Binding ActiveQuestion.IncorrectAnswers[1]}"/>
+            <TextBox Margin="0 0 0 5" Text="{Binding ActiveQuestion.IncorrectAnswer2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
             <Label Content="Third Incorrect Answer:" />
-            <TextBox Text="{Binding ActiveQuestion.IncorrectAnswers[2]}"/>
+            <TextBox Text="{Binding ActiveQuestion.IncorrectAnswer3, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
         </StackPanel>
     </Grid>
 </UserControl>

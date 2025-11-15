@@ -8,21 +8,16 @@ namespace Labb3_Quiz.ViewModels
     {
 
         private readonly MainWindowViewModel _mainWindowViewModel;
-        private Question? _activeQuestion;
-
         public QuestionPackViewModel? ActivePack { get => _mainWindowViewModel?.ActivePack; }
-        public Question? ActiveQuestion
+
+        private QuestionViewModel? _activeQuestion;
+        public QuestionViewModel? ActiveQuestion
         {
             get => _activeQuestion;
             set
             {
                 _activeQuestion = value;
                 RaisePropertyChanged();
-
-                if (_mainWindowViewModel != null)
-                {
-                    _mainWindowViewModel.SaveActivePack();
-                }
 
                 RemoveQuestionCommand?.RaiseCanExecuteChanged();
             }
@@ -45,32 +40,24 @@ namespace Labb3_Quiz.ViewModels
         {
             if (ActivePack == null) return;
 
-            var newQuestion = new Question("New Question", string.Empty, string.Empty, string.Empty, string.Empty);
-                
-            ActivePack.Questions.Add(newQuestion);
-            ActiveQuestion = newQuestion;
+            var newQuestionModel = new Question("New Question", string.Empty, string.Empty, string.Empty, string.Empty);
 
-            ActivePack.SyncToModel();
-             _mainWindowViewModel.SaveActivePack();
+            var newQuestionViewModel = new QuestionViewModel(newQuestionModel, _mainWindowViewModel.SaveActivePack);
+                
+            ActivePack.Questions.Add(newQuestionViewModel);
+            ActiveQuestion = newQuestionViewModel;
         }
         
         private void RemoveQuestion()
         {
             if (ActivePack == null || ActiveQuestion == null) return;
 
-            //var index = ActivePack.Questions.IndexOf(ActiveQuestion);
             ActivePack.Questions.Remove(ActiveQuestion);
             ActiveQuestion = null;
-
-            ActivePack.SyncToModel();
-            _mainWindowViewModel.SaveActivePack();
         }
             
-        private bool CanRemoveQuestion()
-        {
-            return ActiveQuestion != null;
-        }
-
+        private bool CanRemoveQuestion() => ActiveQuestion != null;
+    
         private void OpenPackoptionsDialog()
         {
 
@@ -80,7 +67,7 @@ namespace Labb3_Quiz.ViewModels
             var viewModel = new PackOptionsDialogViewModel(ActivePack.Model);
             dialog.DataContext = viewModel;
 
-            dialog.ShowDialog();
+            dialog.ShowDialog();    
 
             viewModel.ApplyChanges(ActivePack.Model);
 

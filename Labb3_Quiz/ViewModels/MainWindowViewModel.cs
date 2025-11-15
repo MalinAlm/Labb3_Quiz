@@ -71,11 +71,11 @@ namespace Labb3_Quiz.ViewModels
 
             _dataService = new DataService();
 
-            LoadPacks();
-
             PlayerViewModel = new PlayerViewModel(this);
 			ConfigurationViewModel = new ConfigurationViewModel(this);
-           
+
+            LoadPacks();
+
             ShowConfigurationViewCommand = new DelegateCommand(_ =>
             {
                 IsPlayMode = false;
@@ -110,13 +110,15 @@ namespace Labb3_Quiz.ViewModels
 			{
 				var dialogViewModel = (CreateNewPackDialogViewModel)dialog.DataContext;
 
-				var newPack = new QuestionPack(
+				var newPackModel = new QuestionPack(
                     dialogViewModel.Name, 
-                    dialogViewModel.Difficulty, 
+                    dialogViewModel.Difficulty,     
                     dialogViewModel.TimeLimitInSeconds);
 
-				Packs.Add(new QuestionPackViewModel(newPack));
-				ActivePack = Packs.Last();
+                var newPack = new QuestionPackViewModel(newPackModel, SaveActivePack);
+                Packs.Add(newPack);
+
+                ActivePack = newPack;
 
                 ActivePack.SyncToModel();
 
@@ -133,7 +135,7 @@ namespace Labb3_Quiz.ViewModels
             {
                 foreach (var pack in packs)
                 {
-                    Packs.Add(new QuestionPackViewModel(pack));
+                    Packs.Add(new QuestionPackViewModel(pack, SaveActivePack));
                 }
 
                 ActivePack = Packs.First();
@@ -141,7 +143,7 @@ namespace Labb3_Quiz.ViewModels
             else
             {
                 var newPack = new QuestionPack("Default Pack");
-                Packs.Add(new QuestionPackViewModel(newPack));
+                Packs.Add(new QuestionPackViewModel(newPack, SaveActivePack));
                 ActivePack = Packs.First();
             }
         }
@@ -150,7 +152,7 @@ namespace Labb3_Quiz.ViewModels
         {
             if (ActivePack == null) return;
 
-            ActivePack?.SyncToModel();
+            ActivePack.SyncToModel();
 
             _dataService.SavePacks(Packs.Select(p => p.Model).ToList());   
         }
