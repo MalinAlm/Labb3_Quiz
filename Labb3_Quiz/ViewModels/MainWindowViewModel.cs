@@ -5,6 +5,7 @@ using System.Windows;
 using Labb3_Quiz.Services;
 using System.Threading.Tasks;
 using System.ComponentModel.Design;
+using Labb3_Quiz.Dialogs;
 
 namespace Labb3_Quiz.ViewModels
 {
@@ -70,6 +71,7 @@ namespace Labb3_Quiz.ViewModels
         public DelegateCommand ExitProgramCommand { get; }
         public DelegateCommand SelectPackCommand { get; }
         public DelegateCommand DeletePackCommand { get; }
+        public DelegateCommand ImportQuestionsCommand { get; }
 
         public MainWindowViewModel()
 		{
@@ -103,6 +105,7 @@ namespace Labb3_Quiz.ViewModels
             ToggleFullScreenCommand = new DelegateCommand(_ => IsFullScreen = !IsFullScreen);
             ExitProgramCommand = new DelegateCommand(_ => Application.Current.Shutdown());
             DeletePackCommand = new DelegateCommand(async _ => await DeleteActivePackAsync(), _ => ActivePack != null);
+            ImportQuestionsCommand = new DelegateCommand(_ => ImportQuestions());
 
             _ = LoadPacksAsync();
         }
@@ -135,6 +138,32 @@ namespace Labb3_Quiz.ViewModels
                 _ = SaveActivePackAsync();
             }
 		}
+
+        private void ImportQuestions()
+        {
+            var dialog = new ImportQuestionsDialog();
+
+            if (dialog.ShowDialog() == true)
+            {
+                if (dialog.ImportedQuestions.Count == 0)
+                {
+                    MessageBox.Show($"No questions were imported.", "Import", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                    return;
+                }
+
+                foreach (var question in dialog.ImportedQuestions)
+                {
+                    ActivePack.Questions.Add(new QuestionViewModel(question, SaveActivePack, () => ShowPlayerViewCommand.RaiseCanExecuteChanged()));
+                }
+
+                SaveActivePack();
+                ShowPlayerViewCommand.RaiseCanExecuteChanged();
+
+                MessageBox.Show($"Successfully imported {dialog.ImportedQuestions.Count} questions!",
+                    "Import complete", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        }
 
         private async Task LoadPacksAsync()
         {

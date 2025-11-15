@@ -44,6 +44,7 @@
                 />
             <MenuItem 
                 Header="_Import Questions" 
+                Command="{Binding ImportQuestionsCommand}"
                 Icon="{fa:Icon CloudArrowDown}" 
                 InputGestureText="Ctrl+I"
                 IsEnabled="{Binding IsEditMode}"

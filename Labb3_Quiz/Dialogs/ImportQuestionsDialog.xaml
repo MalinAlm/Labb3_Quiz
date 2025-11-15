@@ -21,12 +21,16 @@
 
         <StackPanel Grid.Row="0" Grid.ColumnSpan="2" VerticalAlignment="Center">
             <Label Content="Category:" Margin="10 0"/>
-            <ComboBox Margin="10 0 10 0"/>
+            <ComboBox 
+                x:Name="CategoryComboBox"
+                Margin="10 0 10 0"/>
         </StackPanel>
         
         <StackPanel Grid.Row="1" Grid.ColumnSpan="2" VerticalAlignment="Center">
             <Label Content="Difficulty:" Margin="10 0"/>
-            <ComboBox Margin="10 0 10 0" />
+            <ComboBox 
+                x:Name="DifficultyCombobox"
+                Margin="10 0 10 0" />
         </StackPanel>
     
         <Label 
@@ -35,12 +39,14 @@
             Padding="0"
             Margin="10 20 0 0"/>
         <TextBlock 
+            x:Name="AmountTextBlock"
             HorizontalAlignment="Right"
             Grid.Row="2"
             Grid.Column="1"
             Text="ANTAL FRÅGOR...." 
             Margin="0 20 10 0"/>
         <Slider 
+            x:Name="AmountSlider"
             Grid.Row="2"
             VerticalAlignment="Bottom"
             Grid.ColumnSpan="2"

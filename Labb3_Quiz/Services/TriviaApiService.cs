@@ -1,0 +1,86 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Json;
+using System.Text;
+using System.Text.Json.Serialization;
+using System.Threading.Tasks;
+
+namespace Labb3_Quiz.Services
+{
+    public class TriviaApiService
+    {  
+        private readonly HttpClient _httpClient = new();
+
+        public class TriviaCategoryResponse
+        {
+            [JsonPropertyName("trivia_categories")]
+            public List<TriviaCategory> TriviaCategories { get; set; } = new();
+        }
+
+        public class TriviaCategory
+        {
+            [JsonPropertyName("id")]
+            public int Id { get; set; }
+
+            [JsonPropertyName("name")]
+            public string Name { get; set; }
+        }
+
+        public class TriviaQuestionResponse
+        {
+            [JsonPropertyName("response_code")]
+            public int ResponseCode { get; set; }
+
+            [JsonPropertyName("results")]
+            public List<TriviaQuestion> Results { get; set; } = new();
+        }
+
+        public class TriviaQuestion
+        {
+            [JsonPropertyName("question")]
+            public string Question { get; set; } = "";
+
+            [JsonPropertyName("correct_answer")]
+            public string CorrectAnswer { get; set; } = "";
+
+            [JsonPropertyName("incorrect_answers")]
+            public List<string> IncorrectAnswers { get; set; } = new();
+        }
+
+        public async Task<List<TriviaCategory>> GetCategoriesAsync()
+        {
+            try
+            {
+                var response = await _httpClient.GetFromJsonAsync<TriviaCategoryResponse>("https://opentdb.com/api_category.php");
+
+                return response?.TriviaCategories ?? new();
+            }
+            catch (Exception ex) 
+            {
+                return new();
+            }
+        }
+
+        public async Task<List<TriviaQuestion>> GetQuestionsAsync(int categoryId, string difficulty, int amount)
+        {
+            try
+            {
+                var url = $"https://opentdb.com/api.php?amount={amount}&category={categoryId}&difficulty={difficulty}&type=multiple";
+
+                var response = await _httpClient.GetFromJsonAsync<TriviaQuestionResponse>(url);
+
+                if (response == null || response.ResponseCode != 0)
+                    return new();
+
+                return response.Results;
+            }
+            catch
+            {
+                return new();
+            }
+        }
+
+    }
+}
