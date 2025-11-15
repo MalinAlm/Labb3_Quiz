@@ -32,14 +32,14 @@ namespace Labb3_Quiz.Services
             AllowTrailingCommas = true
         };
 
-        public List<QuestionPack> LoadPacks()
+        public async Task<List<QuestionPack>> LoadPacksAsync()
         {
             if (!File.Exists(_filePath))
                 return new List<QuestionPack>();
 
             try
             {
-                var json = File.ReadAllText(_filePath);
+                var json = await File.ReadAllTextAsync(_filePath);
                 return JsonSerializer.Deserialize<List<QuestionPack>>(json, JsonOptions) ?? new List<QuestionPack>();
             }
             catch (Exception ex) 
@@ -49,10 +49,10 @@ namespace Labb3_Quiz.Services
             }
         }
 
-        public void SavePacks(List<QuestionPack> packs)
+        public async Task SavePacksAsync(List<QuestionPack> packs)
         {
             var json = JsonSerializer.Serialize(packs, JsonOptions);
-            File.WriteAllText(_filePath, json);
+            await File.WriteAllTextAsync(_filePath, json);
         }
 
     }

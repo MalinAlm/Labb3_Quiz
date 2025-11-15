@@ -4,6 +4,7 @@ using Labb3_Quiz.Command;
 using System.Windows;
 using Labb3_Quiz.Services;
 using System.Threading.Tasks;
+using System.ComponentModel.Design;
 
 namespace Labb3_Quiz.ViewModels
 {
@@ -101,10 +102,14 @@ namespace Labb3_Quiz.ViewModels
 			OpenCreateNewPackDialogCommand = new DelegateCommand(_ => OpenCreateNewPackDialog());
             ToggleFullScreenCommand = new DelegateCommand(_ => IsFullScreen = !IsFullScreen);
             ExitProgramCommand = new DelegateCommand(_ => Application.Current.Shutdown());
-            DeletePackCommand = new DelegateCommand(_ => DeleteActivePack(), _ => ActivePack != null);
+            DeletePackCommand = new DelegateCommand(async _ => await DeleteActivePackAsync(), _ => ActivePack != null);
 
-            LoadPacks();
+            _ = LoadPacksAsync();
+        }
 
+        public async Task InitializeAsync()
+        {
+            await LoadPacksAsync();
         }
 
         private void OpenCreateNewPackDialog()
@@ -125,17 +130,15 @@ namespace Labb3_Quiz.ViewModels
                 Packs.Add(newPack);
 
                 ActivePack = newPack;
-
                 ActivePack.SyncToModel();
 
-                var allPacks = Packs.Select(p => p.Model).ToList();
-                _dataService.SavePacks(allPacks);
+                _ = SaveActivePackAsync();
             }
 		}
 
-        private void LoadPacks()
+        private async Task LoadPacksAsync()
         {
-            var packs = _dataService.LoadPacks();
+            var packs = await _dataService.LoadPacksAsync();
 
             if (packs.Any())
             {
@@ -156,14 +159,19 @@ namespace Labb3_Quiz.ViewModels
 
         public void SaveActivePack()
         {
+            _ = SaveActivePackAsync();
+        }
+
+        public async Task SaveActivePackAsync()
+        {
             if (ActivePack == null) return;
 
             ActivePack.SyncToModel();
 
-            _dataService.SavePacks(Packs.Select(p => p.Model).ToList());   
+            await _dataService.SavePacksAsync(Packs.Select(p => p.Model).ToList());   
         }
 
-        public void DeleteActivePack()
+        public async Task DeleteActivePackAsync()
         {
             if (ActivePack == null) return;
 
@@ -178,7 +186,7 @@ namespace Labb3_Quiz.ViewModels
             Packs.Remove(ActivePack);
             ActivePack = Packs.FirstOrDefault();
 
-            _dataService.SavePacks(Packs.Select(p => p.Model).ToList());
+            await _dataService.SavePacksAsync(Packs.Select(p => p.Model).ToList());
 
             DeletePackCommand.RaiseCanExecuteChanged();
             ShowPlayerViewCommand.RaiseCanExecuteChanged();
