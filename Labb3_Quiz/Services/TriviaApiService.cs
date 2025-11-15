@@ -67,12 +67,20 @@ namespace Labb3_Quiz.Services
         {
             try
             {
-                var url = $"https://opentdb.com/api.php?amount={amount}&category={categoryId}&difficulty={difficulty}&type=multiple";
+                var url = $"https://opentdb.com/api.php?amount={amount}&category={categoryId}&difficulty={difficulty}&type=multiple&encode=url3986";
 
                 var response = await _httpClient.GetFromJsonAsync<TriviaQuestionResponse>(url);
 
-                if (response == null || response.ResponseCode != 0)
-                    return new();
+                if (response == null || response.ResponseCode != 0) return new();
+
+                foreach (var q in response.Results)
+                {
+                    q.Question = Uri.UnescapeDataString(q.Question);
+                    q.CorrectAnswer = Uri.UnescapeDataString(q.CorrectAnswer);
+                    q.IncorrectAnswers = q.IncorrectAnswers
+                        .Select(a => Uri.UnescapeDataString(a)).ToList();
+                }
+
 
                 return response.Results;
             }
