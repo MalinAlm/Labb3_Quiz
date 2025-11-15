@@ -14,12 +14,14 @@
                 Header="_New Question Pack" 
                 Icon="{fa:Icon FolderPlus}" 
                 Command="{Binding OpenCreateNewPackDialogCommand}"
+                IsEnabled="{Binding IsEditMode}"
                 />
             
             <MenuItem 
                 Header="_Select Question Pack" 
                 Icon="{fa:Icon FolderOpen}"
-                ItemsSource="{Binding Packs}">
+                ItemsSource="{Binding Packs}"
+                IsEnabled="{Binding IsEditMode}">
                 <MenuItem.ItemContainerStyle>
                 <Style TargetType="MenuItem">
                     <Setter 
@@ -38,11 +40,13 @@
             <MenuItem 
                 Header="_Delete Question Pack" 
                 Icon="{fa:Icon FolderMinus}"
+                IsEnabled="{Binding IsEditMode}"
                 />
             <MenuItem 
                 Header="_Import Questions" 
                 Icon="{fa:Icon CloudArrowDown}" 
                 InputGestureText="Ctrl+I"
+                IsEnabled="{Binding IsEditMode}"
                 />
             <Separator />
             <MenuItem 
@@ -57,17 +61,20 @@
                 Command="{Binding ConfigurationViewModel.AddQuestionCommand}"
                 Icon="{fa:Icon Plus}"
                 InputGestureText="Insert" 
+                IsEnabled="{Binding IsEditMode}"
                 />
             <MenuItem 
                 Header="Remove Question" 
                 Command="{Binding ConfigurationViewModel.RemoveQuestionCommand}"
                 Icon="{fa:Icon Minus}" 
                 InputGestureText="Delete"
+                IsEnabled="{Binding IsEditMode}"
                 />
             <MenuItem 
                 Header="Pack Options" 
                 Command="{Binding ConfigurationViewModel.OpenPackOptionsDialogCommand}" 
                 InputGestureText="Ctrl+O" Icon="{fa:Icon Sliders}" 
+                IsEnabled="{Binding IsEditMode}"
                 />
         </MenuItem>
         <MenuItem Header="_View">
@@ -79,7 +86,7 @@
                 IsEnabled="{Binding IsEditMode}"
                 />
             <MenuItem 
-                Header="_Edit" 
+                Header="_Edit Quiz" 
                 Command="{Binding ShowConfigurationViewCommand}"
                 InputGestureText="Ctrl+E" 
                 Icon="{fa:Icon Gear}"   
