@@ -14,6 +14,7 @@ namespace Labb3_Quiz.ViewModels
         private int _remainingSeconds;
         private int _currentQuestionIndex;
         private static readonly Random _shuffle = new();
+        private List<QuestionViewModel> _shuffledQuestions;
 
         private QuestionViewModel? _activeQuestion;
         public QuestionViewModel? ActiveQuestion
@@ -162,6 +163,13 @@ namespace Labb3_Quiz.ViewModels
             }
         }
 
+        private List<QuestionViewModel> ShuffleQuestions()
+        {
+            return ActivePack!.Questions
+                .OrderBy(_ => _shuffle.Next())
+                .ToList();
+        }
+
         private async void SelectAnswer(object? selected)
         {
             if (ActiveQuestion == null || selected is not string answerText) return;
@@ -189,7 +197,7 @@ namespace Labb3_Quiz.ViewModels
         {
             if (ActivePack == null || !ActivePack.Questions.Any()) return;
 
-            if (_currentQuestionIndex >= ActivePack.Questions.Count)
+            if (_currentQuestionIndex >= _shuffledQuestions.Count)
             {
                 _timer.Stop();
                 TimerText = "Quiz Complete!";
@@ -199,7 +207,7 @@ namespace Labb3_Quiz.ViewModels
                 return;
             }
 
-            ActiveQuestion = ActivePack.Questions[_currentQuestionIndex];
+            ActiveQuestion = _shuffledQuestions[_currentQuestionIndex];
             _currentQuestionIndex++;
 
             var allAnswers = new List<string>
@@ -228,6 +236,7 @@ namespace Labb3_Quiz.ViewModels
             SelectedAnswer = null;
 
             _currentQuestionIndex = 0;
+            _shuffledQuestions = ShuffleQuestions();
             LoadNextQuestion();
         }
 
