@@ -41,7 +41,6 @@
                 Header="_Delete Question Pack" 
                 Icon="{fa:Icon FolderMinus}"
                 Command="{Binding DeletePackCommand}"
-                IsEnabled="{Binding IsEditMode}"
                 />
             <MenuItem 
                 Header="_Import Questions" 

@@ -172,8 +172,10 @@ namespace Labb3_Quiz.ViewModels
 
             if (result != MessageBoxResult.Yes) return;
 
-            Packs.Remove(ActivePack);
+            PlayerViewModel.StopQuiz();
+            IsPlayMode = false;
 
+            Packs.Remove(ActivePack);
             ActivePack = Packs.FirstOrDefault();
 
             _dataService.SavePacks(Packs.Select(p => p.Model).ToList());

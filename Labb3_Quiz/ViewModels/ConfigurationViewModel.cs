@@ -46,6 +46,8 @@ namespace Labb3_Quiz.ViewModels
                 
             ActivePack.Questions.Add(newQuestionViewModel);
             ActiveQuestion = newQuestionViewModel;
+
+            _mainWindowViewModel.ShowPlayerViewCommand.RaiseCanExecuteChanged();
         }
         
         private void RemoveQuestion()
