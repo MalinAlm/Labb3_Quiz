@@ -45,7 +45,10 @@ namespace Labb3_Quiz.ViewModels
 				RaisePropertyChanged();
 				PlayerViewModel?.RaisePropertyChanged(nameof(PlayerViewModel.ActivePack));
                 ConfigurationViewModel?.RaisePropertyChanged(nameof(ConfigurationViewModel.ActivePack));
-			}
+
+                ShowPlayerViewCommand.RaiseCanExecuteChanged();
+                DeletePackCommand.RaiseCanExecuteChanged();
+            }
 		}
 
         private bool _isFullScreen;
@@ -65,6 +68,7 @@ namespace Labb3_Quiz.ViewModels
         public DelegateCommand ToggleFullScreenCommand {  get; }
         public DelegateCommand ExitProgramCommand { get; }
         public DelegateCommand SelectPackCommand { get; }
+        public DelegateCommand DeletePackCommand { get; }
 
         public MainWindowViewModel()
 		{
@@ -73,8 +77,6 @@ namespace Labb3_Quiz.ViewModels
 
             PlayerViewModel = new PlayerViewModel(this);
 			ConfigurationViewModel = new ConfigurationViewModel(this);
-
-            LoadPacks();
 
             ShowConfigurationViewCommand = new DelegateCommand(_ =>
             {
@@ -99,6 +101,10 @@ namespace Labb3_Quiz.ViewModels
 			OpenCreateNewPackDialogCommand = new DelegateCommand(_ => OpenCreateNewPackDialog());
             ToggleFullScreenCommand = new DelegateCommand(_ => IsFullScreen = !IsFullScreen);
             ExitProgramCommand = new DelegateCommand(_ => Application.Current.Shutdown());
+            DeletePackCommand = new DelegateCommand(_ => DeleteActivePack(), _ => ActivePack != null);
+
+            LoadPacks();
+
         }
 
         private void OpenCreateNewPackDialog()
@@ -155,6 +161,25 @@ namespace Labb3_Quiz.ViewModels
             ActivePack.SyncToModel();
 
             _dataService.SavePacks(Packs.Select(p => p.Model).ToList());   
+        }
+
+        public void DeleteActivePack()
+        {
+            if (ActivePack == null) return;
+
+            var result = MessageBox.Show($"Are you sure you want to delete \"{ActivePack.Name}\"?",
+                "Delete Pack", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+            if (result != MessageBoxResult.Yes) return;
+
+            Packs.Remove(ActivePack);
+
+            ActivePack = Packs.FirstOrDefault();
+
+            _dataService.SavePacks(Packs.Select(p => p.Model).ToList());
+
+            DeletePackCommand.RaiseCanExecuteChanged();
+            ShowPlayerViewCommand.RaiseCanExecuteChanged();
         }
 
 	}
