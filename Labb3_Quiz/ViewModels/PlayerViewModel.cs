@@ -38,7 +38,7 @@ namespace Labb3_Quiz.ViewModels
             }
         }
 
-        private List<string> _answerOptions = new();
+        private List<string> _answerOptions = new() {"", "", "", ""};
         public List<string> AnswerOptions
         {
             get => _answerOptions;
@@ -236,7 +236,7 @@ namespace Labb3_Quiz.ViewModels
             _timer.Stop();
 
             ActiveQuestion = null;
-            AnswerOptions = new List<string>();
+            AnswerOptions = new List<string>() {"", "", "", ""};
             FeedbackText= string.Empty;
             FeedbackColor = Brushes.Black;
             SelectedAnswer = null;

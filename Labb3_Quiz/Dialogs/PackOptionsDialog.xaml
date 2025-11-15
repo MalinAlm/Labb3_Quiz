@@ -34,7 +34,7 @@
 
             <StackPanel Orientation="Horizontal">
                 <Label FontWeight="Bold"  Padding="0" Content="Time limit:"/>
-                <TextBlock HorizontalAlignment="Right" Text="{Binding TimeLimitÍnSeconds}" />
+                <TextBlock HorizontalAlignment="Right" Text="{Binding TimeLimitInSeconds}" />
                 <TextBlock VerticalAlignment="Bottom" HorizontalAlignment="Right" Text="seconds" />
             </StackPanel>
 
