@@ -25,7 +25,7 @@ namespace Labb3_Quiz.Services
             public int Id { get; set; }
 
             [JsonPropertyName("name")]
-            public string Name { get; set; }
+            public string Name { get; set; } = "";
         }
 
         public class TriviaQuestionResponse
@@ -57,7 +57,7 @@ namespace Labb3_Quiz.Services
 
                 return response?.TriviaCategories ?? new();
             }
-            catch (Exception ex) 
+            catch (Exception) 
             {
                 return new();
             }
@@ -76,7 +76,7 @@ namespace Labb3_Quiz.Services
 
                 return response.Results;
             }
-            catch
+            catch (Exception)
             {
                 return new();
             }

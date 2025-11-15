@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Labb3_Quiz.Dialogs"
         mc:Ignorable="d"
-        Title="Import Questions From Open Trivia" Height="350" Width="350">
+        Title="Import Questions From Open Trivia" Height="320" Width="280">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -43,7 +43,7 @@
             HorizontalAlignment="Right"
             Grid.Row="2"
             Grid.Column="1"
-            Text="ANTAL FRÅGOR...." 
+            Text="{Binding Value, ElementName=AmountSlider}" 
             Margin="0 20 10 0"/>
         <Slider 
             x:Name="AmountSlider"

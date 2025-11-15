@@ -38,8 +38,8 @@ namespace Labb3_Quiz.ViewModels
 
         public object? CurrentView => IsPlayMode ? PlayerViewModel : ConfigurationViewModel;
 
-        private QuestionPackViewModel _activePack;
-        public QuestionPackViewModel ActivePack
+        private QuestionPackViewModel? _activePack;
+        public QuestionPackViewModel? ActivePack
 		{
 			get => _activePack; 
 			set {
@@ -154,7 +154,7 @@ namespace Labb3_Quiz.ViewModels
 
                 foreach (var question in dialog.ImportedQuestions)
                 {
-                    ActivePack.Questions.Add(new QuestionViewModel(question, SaveActivePack, () => ShowPlayerViewCommand.RaiseCanExecuteChanged()));
+                    ActivePack!.Questions.Add(new QuestionViewModel(question, SaveActivePack, () => ShowPlayerViewCommand.RaiseCanExecuteChanged()));
                 }
 
                 SaveActivePack();

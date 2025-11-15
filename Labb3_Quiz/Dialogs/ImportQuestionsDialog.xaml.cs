@@ -23,7 +23,7 @@ namespace Labb3_Quiz.Dialogs
                 AmountTextBlock.Text = ((int)AmountSlider.Value).ToString();
             };
 
-            DifficultyCombobox.ItemsSource = new[] { "easy", "medium", "hard" };
+            DifficultyCombobox.ItemsSource = new[] { "Easy", "Medium", "Hard" };
             DifficultyCombobox.SelectedIndex = 0;
 
             Loaded += ImportQuestionsDialog_Loaded;
@@ -55,22 +55,37 @@ namespace Labb3_Quiz.Dialogs
 
         private async void Import_Click(object sender, RoutedEventArgs e)
         {
-            if (CategoryComboBox.SelectedValue == null || DifficultyCombobox.SelectedItem == null)
+            if (CategoryComboBox.SelectedValue == null)
             {
-                MessageBox.Show($"Please select a category and difficulty.", "Missing data", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show($"Please select a category and difficulty.", 
+                    "Missing data", 
+                    MessageBoxButton.OK,    
+                    MessageBoxImage.Warning);
+
+                return;
+            }
+
+            if (DifficultyCombobox.SelectedItem is not string difficulty)
+            {
+                MessageBox.Show($"Please select a category and difficulty.", 
+                    "Missing data", 
+                    MessageBoxButton.OK, 
+                    MessageBoxImage.Warning);
 
                 return;
             }
 
             int categoryId = (int)CategoryComboBox.SelectedValue;
-            string difficulty = DifficultyCombobox.SelectedValue.ToString();
             int amount = (int)AmountSlider.Value;
 
-            var questions = await _apiService.GetQuestionsAsync(categoryId, difficulty, amount);
+            var questions = await _apiService.GetQuestionsAsync(categoryId, difficulty.ToLower(), amount);
 
             if (questions.Count == 0)
             {
-                MessageBox.Show("The API returned no valid questions", "Import failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("The API returned no valid questions", 
+                    "Import failed", 
+                    MessageBoxButton.OK, 
+                    MessageBoxImage.Error);
 
                 return;
             }
