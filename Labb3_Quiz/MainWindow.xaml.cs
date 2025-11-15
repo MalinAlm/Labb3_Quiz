@@ -32,7 +32,7 @@ namespace Labb3_Quiz
             if (isFullscreen)
             {
                 WindowStyle = WindowStyle.None;
-                WindowState = WindowState.Normal;
+                WindowState = WindowState.Maximized;
             }
             else
             {
