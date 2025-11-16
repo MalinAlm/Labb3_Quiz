@@ -16,6 +16,7 @@ namespace Labb3_Quiz.ViewModels
         private static readonly Random _shuffle = new();
         private List<QuestionViewModel> _shuffledQuestions;
 
+
         private QuestionViewModel? _activeQuestion;
         public QuestionViewModel? ActiveQuestion
         {
@@ -36,6 +37,28 @@ namespace Labb3_Quiz.ViewModels
                 _canAnswer = value;
                 RaisePropertyChanged();
                 AnswerCommand.RaiseCanExecuteChanged();
+            }
+        }
+
+        private string? _correctAnswer;
+        public string? CorrectAnswer
+        {
+            get => _correctAnswer;
+            set
+            {
+                _correctAnswer = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        private string? _clickedAnswer;
+        public string? ClickedAnswer
+        {
+            get => _clickedAnswer;
+            set
+            {
+                _clickedAnswer = value;
+                RaisePropertyChanged();
             }
         }
 
@@ -145,7 +168,7 @@ namespace Labb3_Quiz.ViewModels
            
             _timer.Tick += Timer_Tick;
 
-            AnswerCommand = new DelegateCommand(SelectAnswer, _=> CanAnswer);
+            AnswerCommand = new DelegateCommand(SelectAnswer);
             RestartCommand = new DelegateCommand(_ => RestartQuiz());
         }
 
@@ -172,9 +195,14 @@ namespace Labb3_Quiz.ViewModels
 
         private async void SelectAnswer(object? selected)
         {
+            if (!CanAnswer) return;
+
             if (ActiveQuestion == null || selected is not string answerText) return;
 
             CanAnswer = false;
+            ClickedAnswer = answerText;
+            CorrectAnswer = ActiveQuestion.CorrectAnswer;
+
             SelectedAnswer = answerText;
             _timer.Stop();
 
@@ -184,10 +212,11 @@ namespace Labb3_Quiz.ViewModels
             FeedbackText = isCorrect ? "Correct answer!" : "Incorrect Answer!";
             FeedbackColor = isCorrect ? Brushes.Green : Brushes.Red;
 
+            await Task.Delay(3000);
 
-            await Task.Delay(2000);
+            ClickedAnswer = null;
+            CorrectAnswer = null;
 
-            SelectedAnswer = null;
             FeedbackText = string.Empty;
             LoadNextQuestion();
             CanAnswer = true;

@@ -99,7 +99,7 @@
                 Content="{Binding AnswerOptions[0]}"
                 Command="{Binding AnswerCommand}"
                 CommandParameter="{Binding AnswerOptions[0]}"
-                IsEnabled="{Binding CanAnswer}"
+                IsHitTestVisible="{Binding CanAnswer}"
                 Grid.Row="4"
                 Width="250"
                 Height="70"
@@ -107,9 +107,9 @@
                 Margin="20 10 20 20">
                 <Button.Background>
                     <MultiBinding Converter="{StaticResource AnswerToColorsConverter}">
-                        <Binding Path="SelectedAnswer"/>
+                        <Binding Path="ClickedAnswer"/>
                         <Binding Path="AnswerOptions[0]"/>
-                        <Binding Path="ActiveQuestion.CorrectAnswer"/>
+                        <Binding Path="CorrectAnswer"/>
                     </MultiBinding>
                 </Button.Background>
             </Button>
@@ -117,7 +117,7 @@
                 Content="{Binding AnswerOptions[1]}"
                 Command="{Binding AnswerCommand}"
                 CommandParameter="{Binding AnswerOptions[1]}"
-                IsEnabled="{Binding CanAnswer}"
+                IsHitTestVisible="{Binding CanAnswer}"
                 Grid.Row="5"
                 Width="250"
                 Height="70"
@@ -125,9 +125,9 @@
                 Margin="20 10 20 20">
                 <Button.Background>
                     <MultiBinding Converter="{StaticResource AnswerToColorsConverter}">
-                        <Binding Path="SelectedAnswer"/>
+                        <Binding Path="ClickedAnswer"/>
                         <Binding Path="AnswerOptions[1]"/>
-                        <Binding Path="ActiveQuestion.CorrectAnswer"/>
+                        <Binding Path="CorrectAnswer"/>
                     </MultiBinding>
                 </Button.Background>
             </Button>
@@ -135,7 +135,7 @@
                 Content="{Binding AnswerOptions[2]}"
                 Command="{Binding AnswerCommand}"
                 CommandParameter="{Binding AnswerOptions[2]}"
-                IsEnabled="{Binding CanAnswer}"
+                IsHitTestVisible="{Binding CanAnswer}"
                 Grid.Row="4"
                 Grid.Column="1"
                 Width="250"
@@ -144,9 +144,9 @@
                 Margin="20 10 20 20">
                 <Button.Background>
                     <MultiBinding Converter="{StaticResource AnswerToColorsConverter}">
-                        <Binding Path="SelectedAnswer"/>
+                        <Binding Path="ClickedAnswer"/>
                         <Binding Path="AnswerOptions[2]"/>
-                        <Binding Path="ActiveQuestion.CorrectAnswer"/>
+                        <Binding Path="CorrectAnswer"/>
                     </MultiBinding>
                 </Button.Background>
             </Button>
@@ -154,7 +154,7 @@
                 Content="{Binding AnswerOptions[3]}"
                 Command="{Binding AnswerCommand}"
                 CommandParameter="{Binding AnswerOptions[3]}"
-                IsEnabled="{Binding CanAnswer}"
+                IsHitTestVisible="{Binding CanAnswer}"
                 Grid.Row="5"
                 Grid.Column="1"
                 Width="250"
@@ -163,9 +163,9 @@
                 Margin="20 10 20 20">
                 <Button.Background>
                     <MultiBinding Converter="{StaticResource AnswerToColorsConverter}">
-                        <Binding Path="SelectedAnswer"/>
+                        <Binding Path="ClickedAnswer"/>
                         <Binding Path="AnswerOptions[3]"/>
-                        <Binding Path="ActiveQuestion.CorrectAnswer"/>
+                        <Binding Path="CorrectAnswer"/>
                     </MultiBinding>
                 </Button.Background>
             </Button>
