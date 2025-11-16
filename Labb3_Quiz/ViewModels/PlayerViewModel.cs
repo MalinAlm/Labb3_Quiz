@@ -71,17 +71,6 @@ namespace Labb3_Quiz.ViewModels
             }
         }
 
-        private string? _selectedAnswer;
-        public string? SelectedAnswer
-        {
-            get => _selectedAnswer;
-            set
-            {
-                _selectedAnswer = value;
-                RaisePropertyChanged();
-            }
-        }
-
         private bool _quizFinished;
         public bool QuizFinished
         {
@@ -201,7 +190,6 @@ namespace Labb3_Quiz.ViewModels
             ClickedAnswer = answerText;
             CorrectAnswer = ActiveQuestion.CorrectAnswer;
 
-            SelectedAnswer = answerText;
             _timer.Stop();
 
             bool isCorrect = answerText == ActiveQuestion.CorrectAnswer;
@@ -260,7 +248,6 @@ namespace Labb3_Quiz.ViewModels
             Score = 0;
             FeedbackText = string.Empty;
             FeedbackColor = Brushes.Black;
-            SelectedAnswer = null;
 
             _currentQuestionIndex = 0;
             _shuffledQuestions = ShuffleQuestions();
@@ -275,7 +262,6 @@ namespace Labb3_Quiz.ViewModels
             AnswerOptions = new List<string>() {"", "", "", ""};
             FeedbackText= string.Empty;
             FeedbackColor = Brushes.Black;
-            SelectedAnswer = null;
 
             _currentQuestionIndex = 0;
             _remainingSeconds = 0;
