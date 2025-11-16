@@ -34,8 +34,6 @@ namespace Labb3_Quiz.ViewModels
 
         public bool IsEditMode => !_isPlayMode;
 
-        public object? CurrentView => IsPlayMode ? PlayerViewModel : ConfigurationViewModel;
-
         private QuestionPackViewModel? _activePack;
         public QuestionPackViewModel? ActivePack
 		{
