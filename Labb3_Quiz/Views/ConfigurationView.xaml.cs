@@ -22,7 +22,6 @@ namespace Labb3_Quiz.Views
         public ConfigurationView()
         {
             InitializeComponent();
-
         }
 
         private void UserControl_PreviewKeyDown(object sender, KeyEventArgs e)

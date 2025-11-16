@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 using Labb3_Quiz.Models;
 using System.Text.Json;
 using System.IO;
@@ -11,9 +7,8 @@ using System.Windows;
 
 namespace Labb3_Quiz.Services
 {
-    internal class DataService
+    public class DataService
     {
-
         private readonly string _folderPath;
         private readonly string _filePath;
 
@@ -54,6 +49,5 @@ namespace Labb3_Quiz.Services
             var json = JsonSerializer.Serialize(packs, JsonOptions);
             await File.WriteAllTextAsync(_filePath, json);
         }
-
     }
 }

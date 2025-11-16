@@ -2,7 +2,6 @@
 using Labb3_Quiz.Models;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.Linq;
 
 namespace Labb3_Quiz.ViewModels
 {
@@ -90,7 +89,5 @@ namespace Labb3_Quiz.ViewModels
             _model.Questions = Questions.Select(qvm => qvm.Model).ToList();
         }
         public QuestionPack Model => _model;
-
     }
-
 }

@@ -58,21 +58,21 @@
         </MenuItem>
         <MenuItem Header="_Edit">
             <MenuItem 
-                Header="Add Question" 
+                Header="Ad_d Question" 
                 Command="{Binding ConfigurationViewModel.AddQuestionCommand}"
                 Icon="{fa:Icon Plus}"
                 InputGestureText="Insert" 
                 IsEnabled="{Binding IsEditMode}"
                 />
             <MenuItem 
-                Header="Remove Question" 
+                Header="R_emove Question" 
                 Command="{Binding ConfigurationViewModel.RemoveQuestionCommand}"
                 Icon="{fa:Icon Minus}" 
                 InputGestureText="Delete"
                 IsEnabled="{Binding IsEditMode}"
                 />
             <MenuItem 
-                Header="Pack Options" 
+                Header="Pack O_ptions" 
                 Command="{Binding ConfigurationViewModel.OpenPackOptionsDialogCommand}" 
                 InputGestureText="Ctrl+O" Icon="{fa:Icon Sliders}" 
                 IsEnabled="{Binding IsEditMode}"

@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿
 using System.Net.Http;
 using System.Net.Http.Json;
-using System.Text;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace Labb3_Quiz.Services
 {
@@ -81,7 +77,6 @@ namespace Labb3_Quiz.Services
                         .Select(a => Uri.UnescapeDataString(a)).ToList();
                 }
 
-
                 return response.Results;
             }
             catch (Exception)
@@ -89,6 +84,5 @@ namespace Labb3_Quiz.Services
                 return new();
             }
         }
-
     }
 }

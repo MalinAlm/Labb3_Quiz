@@ -21,8 +21,5 @@ namespace Labb3_Quiz.Models
             CorrectAnswer = correctAnswer;
             IncorrectAnswers = [incorrectAnswer1, incorrectAnswer2, incorrectAnswer3];
         }
-
-       
     }
-
 }

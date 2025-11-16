@@ -9,7 +9,6 @@ namespace Labb3_Quiz
         private readonly MainWindowViewModel? mainWindowViewModel;
         public MainWindow()
         {
-           
             InitializeComponent();
 
             mainWindowViewModel = new MainWindowViewModel();

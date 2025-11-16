@@ -1,6 +1,5 @@
 ﻿using Labb3_Quiz.Command;
 using System.Windows.Threading;
-using Labb3_Quiz.Models;
 using System.Windows.Media;
 
 
@@ -15,7 +14,6 @@ namespace Labb3_Quiz.ViewModels
         private int _currentQuestionIndex;
         private static readonly Random _shuffle = new();
         private List<QuestionViewModel> _shuffledQuestions;
-
 
         private QuestionViewModel? _activeQuestion;
         public QuestionViewModel? ActiveQuestion

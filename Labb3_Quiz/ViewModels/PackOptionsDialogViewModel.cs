@@ -20,7 +20,6 @@ namespace Labb3_Quiz.ViewModels
                 _name = value; 
                 RaisePropertyChanged();
             }
-
         }
 
         private Difficulty _difficulty;

@@ -3,8 +3,6 @@ using System.Collections.ObjectModel;
 using Labb3_Quiz.Command;
 using System.Windows;
 using Labb3_Quiz.Services;
-using System.Threading.Tasks;
-using System.ComponentModel.Design;
 using Labb3_Quiz.Dialogs;
 
 namespace Labb3_Quiz.ViewModels
@@ -220,6 +218,5 @@ namespace Labb3_Quiz.ViewModels
             DeletePackCommand.RaiseCanExecuteChanged();
             ShowPlayerViewCommand.RaiseCanExecuteChanged();
         }
-
 	}
 }

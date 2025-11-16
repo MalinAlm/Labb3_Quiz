@@ -7,7 +7,6 @@ namespace Labb3_Quiz.Dialogs
 {
     public partial class ImportQuestionsDialog : Window
     {
-
         private readonly TriviaApiService _apiService;
 
         public List<Question> ImportedQuestions { get; private set; } = new();
@@ -49,7 +48,6 @@ namespace Labb3_Quiz.Dialogs
             CategoryComboBox.DisplayMemberPath = "Name";
             CategoryComboBox.SelectedValuePath = "Id";
             CategoryComboBox.SelectedIndex = 0;
-
         }
 
         private async void Import_Click(object sender, RoutedEventArgs e)

@@ -8,7 +8,6 @@ namespace Labb3_Quiz.ViewModels
 {
    public class CreateNewPackDialogViewModel :ViewModelBase
     {
-
         private string _name = "New Pack";
         public string Name
         {
@@ -22,6 +21,7 @@ namespace Labb3_Quiz.ViewModels
                 }
             }
         }
+
         public ObservableCollection<Difficulty> Difficulties { get; } = new(Enum.GetValues(typeof(Difficulty)).Cast<Difficulty>());
         public Difficulty Difficulty { get; set; } = Difficulty.Medium;
 
@@ -37,7 +37,6 @@ namespace Labb3_Quiz.ViewModels
                     RaisePropertyChanged();
                 }
             }
-        
         }
 
         public DelegateCommand ConfirmCommand  { get; }
@@ -53,6 +52,5 @@ namespace Labb3_Quiz.ViewModels
         {
             RequestClose?.Invoke();
         }
-
     }
 }

@@ -6,7 +6,6 @@ namespace Labb3_Quiz.ViewModels
 {
     public class ConfigurationViewModel : ViewModelBase
     {
-
         private readonly MainWindowViewModel _mainWindowViewModel;
         public QuestionPackViewModel? ActivePack { get => _mainWindowViewModel?.ActivePack; }
 
@@ -34,8 +33,8 @@ namespace Labb3_Quiz.ViewModels
             AddQuestionCommand = new DelegateCommand(_ => AddQuestion());
             RemoveQuestionCommand = new DelegateCommand(_ => RemoveQuestion(), _ => CanRemoveQuestion());
             OpenPackOptionsDialogCommand = new DelegateCommand(_ => OpenPackoptionsDialog());
-
         }
+
         private void AddQuestion()
         {
             if (ActivePack == null) return;
