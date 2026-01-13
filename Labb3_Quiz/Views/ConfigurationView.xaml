@@ -7,9 +7,8 @@
              xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
-             PreviewKeyDown="UserControl_PreviewKeyDown"
-             DataContext="{Binding ConfigurationViewModel}"
- >
+             x:Name="Root"
+             PreviewKeyDown="UserControl_PreviewKeyDown" >
 
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="VisibilityConverter"/>
@@ -55,6 +54,17 @@
         </ListBox>
 
         <StackPanel Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Margin="10 -8 20 0">
+            <StackPanel.Style>
+                <Style TargetType="StackPanel">
+                    <Setter Property="IsEnabled" Value="True"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ActiveQuestion}" Value="{x:Null}">
+                            <Setter Property="IsEnabled" Value="False"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </StackPanel.Style>
+            
             <Label Content="Question:" />
             <TextBox Height="90" Margin="0 0 0 30" Text="{Binding ActiveQuestion.Query, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  />
 

@@ -53,9 +53,10 @@ namespace Labb3_Quiz.Services
 
                 return response?.TriviaCategories ?? new();
             }
-            catch (Exception) 
+            catch (Exception ex) 
             {
-                return new();
+                Console.WriteLine($"Error getting category: {ex}");
+                return new List<TriviaCategory>();
             }
         }
 
@@ -79,9 +80,10 @@ namespace Labb3_Quiz.Services
 
                 return response.Results;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return new();
+                Console.WriteLine($"Error getting Quetions: {ex}");
+                return new List<TriviaQuestion>();
             }
         }
     }

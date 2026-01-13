@@ -6,8 +6,10 @@ namespace Labb3_Quiz.ViewModels
 {
     public class ConfigurationViewModel : ViewModelBase
     {
+
         private readonly MainWindowViewModel _mainWindowViewModel;
         public QuestionPackViewModel? ActivePack { get => _mainWindowViewModel?.ActivePack; }
+        public bool HasActiveQuestion => ActiveQuestion != null;
 
         private QuestionViewModel? _activeQuestion;
         public QuestionViewModel? ActiveQuestion
@@ -17,6 +19,9 @@ namespace Labb3_Quiz.ViewModels
             {
                 _activeQuestion = value;
                 RaisePropertyChanged();
+                RaisePropertyChanged(nameof(ActiveQuestion));
+                System.Diagnostics.Debug.WriteLine($"ActiveQuestion set: {_activeQuestion?.Query ?? "null"}");
+
 
                 RemoveQuestionCommand?.RaiseCanExecuteChanged();
             }
