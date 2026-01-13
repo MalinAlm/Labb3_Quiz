@@ -1,5 +1,6 @@
 ﻿using Labb3_Quiz.Command;
 using Labb3_Quiz.Models;
+using System.Security.Cryptography.X509Certificates;
 using System.Windows.Input;
 
 namespace Labb3_Quiz.ViewModels
@@ -7,8 +8,11 @@ namespace Labb3_Quiz.ViewModels
     public class ConfigurationViewModel : ViewModelBase
     {
 
+        public bool HasActivePack => ActivePack != null;
+
         private readonly MainWindowViewModel _mainWindowViewModel;
         public QuestionPackViewModel? ActivePack { get => _mainWindowViewModel?.ActivePack; }
+
         public bool HasActiveQuestion => ActiveQuestion != null;
 
         private QuestionViewModel? _activeQuestion;
@@ -27,7 +31,7 @@ namespace Labb3_Quiz.ViewModels
             }
         }
 
-        public ICommand AddQuestionCommand { get; }
+        public DelegateCommand AddQuestionCommand { get; }
         public DelegateCommand RemoveQuestionCommand { get; }
         public DelegateCommand OpenPackOptionsDialogCommand { get; }
 
@@ -35,9 +39,22 @@ namespace Labb3_Quiz.ViewModels
         {
             this._mainWindowViewModel = mainWindowViewModel;
 
-            AddQuestionCommand = new DelegateCommand(_ => AddQuestion());
+            _mainWindowViewModel.PropertyChanged += (_, e) =>
+            {
+                if (e.PropertyName == nameof(_mainWindowViewModel.ActivePack))
+                {
+                    RaisePropertyChanged(nameof(ActivePack));
+                    RaisePropertyChanged(nameof(HasActivePack));
+
+                    AddQuestionCommand.RaiseCanExecuteChanged();
+                    OpenPackOptionsDialogCommand.RaiseCanExecuteChanged();
+                    RemoveQuestionCommand.RaiseCanExecuteChanged();
+                }
+            };
+
+            AddQuestionCommand = new DelegateCommand(_ => AddQuestion(), _ => HasActivePack);
+            OpenPackOptionsDialogCommand = new DelegateCommand(_ => OpenPackoptionsDialog(), _ => HasActivePack);
             RemoveQuestionCommand = new DelegateCommand(_ => RemoveQuestion(), _ => CanRemoveQuestion());
-            OpenPackOptionsDialogCommand = new DelegateCommand(_ => OpenPackoptionsDialog());
         }
 
         private void AddQuestion()
