@@ -182,6 +182,7 @@ namespace Labb3_Quiz.ViewModels
 
         private async void SelectAnswer(object? selected)
         {
+
             if (!CanAnswer) return;
 
             if (ActiveQuestion == null || selected is not string answerText) return;
@@ -196,7 +197,7 @@ namespace Labb3_Quiz.ViewModels
             if (isCorrect) Score++;
 
             FeedbackText = isCorrect ? "Correct answer!" : "Incorrect Answer!";
-            FeedbackColor = isCorrect ? Brushes.Green : Brushes.Red;
+            FeedbackColor = isCorrect ? Brushes.LightGreen : Brushes.Red;
 
             await Task.Delay(3000);
 

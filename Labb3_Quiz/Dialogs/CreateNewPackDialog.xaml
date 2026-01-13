@@ -54,7 +54,7 @@
             <Button 
                 Content="OK"
                 Width="60"
-                Height="20"
+                Height="30"
                 Margin="5"
                 Command="{Binding ConfirmCommand}"
                 IsDefault="True"
@@ -62,7 +62,7 @@
             <Button 
                 Content="Cancel"
                 Width="60"
-                Height="20"
+                Height="30"
                 Margin="5"
                 IsCancel="True"
                 />  

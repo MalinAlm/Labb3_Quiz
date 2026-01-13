@@ -66,7 +66,7 @@
             </StackPanel.Style>
             
             <Label Content="Question:" />
-            <TextBox Height="90" Margin="0 0 0 30" Text="{Binding ActiveQuestion.Query, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  />
+            <TextBox Height="70" Margin="0 0 0 15" Text="{Binding ActiveQuestion.Query, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  />
 
             <Label Content="Correct Answer:" />
             <TextBox Margin="0 0 0 5" Text="{Binding ActiveQuestion.CorrectAnswer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
