@@ -76,13 +76,14 @@ namespace Labb3_Quiz.ViewModels
             var viewModel = new PackOptionsDialogViewModel(ActivePack.Model);
             dialog.DataContext = viewModel;
 
-            dialog.ShowDialog();    
+            dialog.ShowDialog();
 
-            viewModel.ApplyChanges(ActivePack.Model);
+            ActivePack.Name = viewModel.Name;
+            ActivePack.Difficulty = viewModel.Difficulty;
+            ActivePack.TimeLimitInSeconds = viewModel.TimeLimitInSeconds;
 
             _mainWindowViewModel.SaveActivePack();
 
-            RaisePropertyChanged(nameof(ActivePack));
         }
     }
 }
