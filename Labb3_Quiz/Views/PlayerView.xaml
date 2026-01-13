@@ -23,27 +23,27 @@
                         Margin="20">
 
                 <TextBlock 
-            Text="Complete!"
-            FontSize="34"
-            FontWeight="Bold"
-            HorizontalAlignment="Center"
-            Margin="0 0 0 20"
-            />
+                    Text="Complete!"
+                    FontSize="34"
+                    FontWeight="Bold"
+                    HorizontalAlignment="Center"
+                    Margin="0 0 0 20"
+                    />
 
                 <TextBlock 
-            Text="{Binding ResultText}"
-            FontSize="22"
-            HorizontalAlignment="Center"
-            Margin="0 0 0 30"
-            />
+                    Text="{Binding ResultText}"
+                    FontSize="22"
+                    HorizontalAlignment="Center"
+                    Margin="0 0 0 30"
+                    />
 
                 <Button 
-            Content="Restart Quiz"
-            Command="{Binding RestartCommand}"
-            Width="150"
-            Height="40"
-            HorizontalAlignment="Center"
-            />
+                    Content="Restart Quiz"
+                    Command="{Binding RestartCommand}"
+                    Width="150"
+                    Height="40"
+                    HorizontalAlignment="Center"
+                    />
             </StackPanel>
         </Grid>
 

@@ -10,17 +10,19 @@ namespace Labb3_Quiz.Converters
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
         
-            if (values.Length < 3) return Brushes.LightGray;
+            if (values.Length < 3) return (Brush)new BrushConverter().ConvertFromString("#F3F3F3");
 
             var clickedAnswer = values[0] as string;
             var buttonText = values[1] as string;
             var correctAnswer = values[2] as string;
 
-            if (string.IsNullOrEmpty(clickedAnswer)) return Brushes.LightGray;
+            if (string.IsNullOrEmpty(clickedAnswer)) return (Brush)new BrushConverter().ConvertFromString("#F3F3F3");
 
-            if (buttonText == correctAnswer) return Brushes.LightGreen;
+            //Correct answer
+            if (buttonText == correctAnswer) return (Brush)new BrushConverter().ConvertFromString("#C8FFAC");
 
-            if (buttonText == clickedAnswer) return Brushes.IndianRed;
+            //Incorrect answer
+            if (buttonText == clickedAnswer) return (Brush)new BrushConverter().ConvertFromString("#FFA7A7");
 
             return Brushes.LightGray;
         }

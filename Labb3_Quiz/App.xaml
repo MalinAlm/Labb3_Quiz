@@ -6,15 +6,24 @@
              xmlns:viewmodels="clr-namespace:Labb3_Quiz.ViewModels"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <Style TargetType="Label">
-            <Setter Property="FontWeight" Value="Bold"/>
-        </Style>
-        <DataTemplate DataType="{x:Type viewmodels:PlayerViewModel}">
-            <views:PlayerView />
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type viewmodels:ConfigurationViewModel}">
-            <views:ConfigurationView />
-        </DataTemplate>
-        
+        <ResourceDictionary>
+
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles/Controls.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <Style TargetType="Label">
+                <Setter Property="FontWeight" Value="Bold"/>
+            </Style>
+
+            <DataTemplate DataType="{x:Type viewmodels:PlayerViewModel}">
+                <views:PlayerView />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewmodels:ConfigurationViewModel}">
+                <views:ConfigurationView />
+            </DataTemplate>
+
+        </ResourceDictionary>
     </Application.Resources>
 </Application>
