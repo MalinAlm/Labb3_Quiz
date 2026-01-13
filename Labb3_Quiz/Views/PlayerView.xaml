@@ -101,7 +101,6 @@
                 />
 
             <Button 
-                Content="{Binding AnswerOptions[0]}"
                 Command="{Binding AnswerCommand}"
                 CommandParameter="{Binding AnswerOptions[0]}"
                 IsHitTestVisible="{Binding CanAnswer}"
@@ -110,6 +109,14 @@
                 Height="70"
                 HorizontalAlignment="Right"
                 Margin="20 10 20 20">
+                <Button.Content>
+                    <TextBlock
+                        Text="{Binding AnswerOptions[0]}"
+                        TextWrapping="Wrap"
+                        TextAlignment="Center"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center" />
+                </Button.Content>
                 <Button.Background>
                     <MultiBinding Converter="{StaticResource AnswerToColorsConverter}">
                         <Binding Path="ClickedAnswer"/>
@@ -119,7 +126,6 @@
                 </Button.Background>
             </Button>
             <Button 
-                Content="{Binding AnswerOptions[1]}"
                 Command="{Binding AnswerCommand}"
                 CommandParameter="{Binding AnswerOptions[1]}"
                 IsHitTestVisible="{Binding CanAnswer}"
@@ -128,6 +134,14 @@
                 Height="70"
                 HorizontalAlignment="Right"
                 Margin="20 10 20 20">
+                <Button.Content>
+                    <TextBlock
+                        Text="{Binding AnswerOptions[1]}"
+                        TextWrapping="Wrap"
+                        TextAlignment="Center"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center" />
+                </Button.Content>
                 <Button.Background>
                     <MultiBinding Converter="{StaticResource AnswerToColorsConverter}">
                         <Binding Path="ClickedAnswer"/>
@@ -137,7 +151,6 @@
                 </Button.Background>
             </Button>
             <Button 
-                Content="{Binding AnswerOptions[2]}"
                 Command="{Binding AnswerCommand}"
                 CommandParameter="{Binding AnswerOptions[2]}"
                 IsHitTestVisible="{Binding CanAnswer}"
@@ -147,6 +160,14 @@
                 Height="70"
                 HorizontalAlignment="Left"
                 Margin="20 10 20 20">
+                <Button.Content>
+                    <TextBlock
+                        Text="{Binding AnswerOptions[2]}"
+                        TextWrapping="Wrap"
+                        TextAlignment="Center"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center" />
+                </Button.Content>
                 <Button.Background>
                     <MultiBinding Converter="{StaticResource AnswerToColorsConverter}">
                         <Binding Path="ClickedAnswer"/>
@@ -156,7 +177,6 @@
                 </Button.Background>
             </Button>
             <Button 
-                Content="{Binding AnswerOptions[3]}"
                 Command="{Binding AnswerCommand}"
                 CommandParameter="{Binding AnswerOptions[3]}"
                 IsHitTestVisible="{Binding CanAnswer}"
@@ -166,6 +186,14 @@
                 Height="70"
                 HorizontalAlignment="Left"
                 Margin="20 10 20 20">
+                <Button.Content>
+                    <TextBlock
+                        Text="{Binding AnswerOptions[3]}"
+                        TextWrapping="Wrap"
+                        TextAlignment="Center"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center" />
+                </Button.Content>
                 <Button.Background>
                     <MultiBinding Converter="{StaticResource AnswerToColorsConverter}">
                         <Binding Path="ClickedAnswer"/>
