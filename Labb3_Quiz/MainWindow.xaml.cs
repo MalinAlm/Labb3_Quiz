@@ -23,6 +23,25 @@ namespace Labb3_Quiz
             };
         }
 
+        private bool _initialized;
+
+        private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+
+            if (_initialized) return;
+            _initialized = true; 
+
+            try
+            {
+                await mainWindowViewModel.InitializeAsync();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to load packs: {ex.Message}", "Error",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
         private void ToggleFullScreen(bool isFullscreen)
         {
             if (isFullscreen)

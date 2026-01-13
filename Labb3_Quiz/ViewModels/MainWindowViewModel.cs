@@ -103,7 +103,6 @@ namespace Labb3_Quiz.ViewModels
             DeletePackCommand = new DelegateCommand(async _ => await DeleteActivePackAsync(), _ => ActivePack != null);
             ImportQuestionsCommand = new DelegateCommand(_ => ImportQuestions());
 
-            _ = LoadPacksAsync();
         }
 
         public async Task InitializeAsync()
