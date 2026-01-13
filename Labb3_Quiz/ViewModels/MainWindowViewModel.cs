@@ -101,7 +101,7 @@ namespace Labb3_Quiz.ViewModels
             ToggleFullScreenCommand = new DelegateCommand(_ => IsFullScreen = !IsFullScreen);
             ExitProgramCommand = new DelegateCommand(_ => Application.Current.Shutdown());
             DeletePackCommand = new DelegateCommand(async _ => await DeleteActivePackAsync(), _ => ActivePack != null);
-            ImportQuestionsCommand = new DelegateCommand(_ => ImportQuestions());
+            ImportQuestionsCommand = new DelegateCommand(async _ => await ImportQuestionsAsync(), _ => ActivePack != null);
 
         }
 
@@ -134,31 +134,69 @@ namespace Labb3_Quiz.ViewModels
             }
 		}
 
-        private void ImportQuestions()
+        private async Task ImportQuestionsAsync()
         {
-            var dialog = new ImportQuestionsDialog();
-
-            if (dialog.ShowDialog() == true)
+            if (ActivePack == null)
             {
-                if (dialog.ImportedQuestions.Count == 0)
-                {
-                    MessageBox.Show($"No questions were imported.", "Import", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("No question pack selected.", "Import",
+                    MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
 
-                    return;
+            try
+            {
+                var api = new Services.TriviaApiService();
+                var categories = await api.GetCategoriesAsync();
+
+                if (categories == null || categories.Count == 0)
+                {
+                    MessageBox.Show(
+                        "Couldn't connect to Open Trivia DB.\n\n" +
+                        "Check your internet connection and try again.",
+                        "Import failed",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Warning);
+
+                    return; 
                 }
 
-                foreach (var question in dialog.ImportedQuestions)
+                var dialog = new Dialogs.ImportQuestionsDialog();
+                if (dialog.ShowDialog() == true)
                 {
-                    ActivePack!.Questions.Add(new QuestionViewModel(question, SaveActivePack, () => ShowPlayerViewCommand.RaiseCanExecuteChanged()));
+                    if (dialog.ImportedQuestions.Count == 0)
+                    {
+                        MessageBox.Show("No questions were imported.", "Import",
+                            MessageBoxButton.OK, MessageBoxImage.Information);
+                        return;
+                    }
+
+                    foreach (var question in dialog.ImportedQuestions)
+                    {
+                        ActivePack.Questions.Add(new QuestionViewModel(
+                            question,
+                            SaveActivePack,
+                            () => ShowPlayerViewCommand.RaiseCanExecuteChanged()));
+                    }
+
+                    SaveActivePack();
+                    ShowPlayerViewCommand.RaiseCanExecuteChanged();
+
+                    MessageBox.Show($"Successfully imported {dialog.ImportedQuestions.Count} questions!",
+                        "Import complete", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
-
-                SaveActivePack();
-                ShowPlayerViewCommand.RaiseCanExecuteChanged();
-
-                MessageBox.Show($"Successfully imported {dialog.ImportedQuestions.Count} questions!",
-                    "Import complete", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    "Couldn't connect to Open Trivia DB.\n\n" +
+                    "Check your internet connection and try again.\n\n" +
+                    $"Details: {ex.Message}",
+                    "Import failed",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
             }
         }
+
 
         private async Task LoadPacksAsync()
         {

@@ -6,8 +6,16 @@ using System.Text.Json.Serialization;
 namespace Labb3_Quiz.Services
 {
     public class TriviaApiService
-    {  
-        private readonly HttpClient _httpClient = new();
+    {
+        private readonly HttpClient _httpClient;
+
+        public TriviaApiService()
+        {
+            _httpClient = new HttpClient
+            {
+                Timeout = TimeSpan.FromSeconds(6)
+            };
+        }
 
         public class TriviaCategoryResponse
         {
